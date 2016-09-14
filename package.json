@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/yishn/chinese-tokenizer/issues"
   },
-  "homepage": "https://github.com/yishn/chinese-tokenizer#readme"
+  "homepage": "https://github.com/yishn/chinese-tokenizer#readme",
+  "dependencies": {
+    "cedict-lookup": "0.0.2"
+  }
 }
