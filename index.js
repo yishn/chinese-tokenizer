@@ -38,6 +38,8 @@ class Tokenizer {
         }
 
         while (i < text.length) {
+            // First match two or more characters
+
             if (i != text.length - 1) {
                 let getTwo = text.slice(i, i + 2)
                 let entries = this.dictionary.getEntriesStartingWith(getTwo)
@@ -59,6 +61,8 @@ class Tokenizer {
                     continue
                 }
             }
+
+            // If all fails, match one character
 
             let character = text[i]
             pushEntry(character)
