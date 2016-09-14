@@ -1,0 +1,22 @@
+{
+  "name": "chinese-tokenizer",
+  "version": "0.1.0",
+  "description": "Tokenizes Chinese texts into words.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yishn/chinese-tokenizer.git"
+  },
+  "keywords": [
+    "chinese",
+    "text",
+    "tokenizer",
+    "word"
+  ],
+  "author": "Yichuan Shen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yishn/chinese-tokenizer/issues"
+  },
+  "homepage": "https://github.com/yishn/chinese-tokenizer#readme"
+}
