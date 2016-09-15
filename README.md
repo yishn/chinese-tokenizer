@@ -12,6 +12,8 @@ npm install chinese-tokenizer --save
 
 ## Usage
 
+Make sure to provide the [CC-CEDICT](https://cc-cedict.org/) data.
+
 ~~~js
 const {tokenize} = require('chinese-tokenizer')('./cedict.txt')
 console.log(tokenize('我是中国人。'))
