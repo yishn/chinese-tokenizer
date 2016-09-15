@@ -9,6 +9,11 @@ const tokenizer = require('./index')('./cedict.txt')
 console.log(tokenizer.tokenize('我是中国人。'))
 ~~~
 
+~~~js
+const tokenizer = require('./index')('./cedict.txt', 'traditional')
+console.log(tokenizer.tokenize('我是中國人。'))
+~~~
+
 Output:
 
 ~~~
