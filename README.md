@@ -1,6 +1,14 @@
 # chinese-tokenizer
 
-Tokenizes Chinese texts into words using [CC-CEDICT](https://cc-cedict.org/). This is a work in progress.
+Tokenizes Chinese texts into words using [CC-CEDICT](https://cc-cedict.org/).
+
+## Installation
+
+Use npm to install:
+
+~~~
+npm install chinese-tokenizer --save
+~~~
 
 ## Usage
 
