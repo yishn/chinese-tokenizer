@@ -5,13 +5,13 @@ Tokenizes Chinese texts into words. This is a work in progress.
 ## Usage
 
 ~~~js
-const tokenizer = require('./index')('./cedict.txt')
-console.log(tokenizer.tokenize('我是中国人。'))
+const {tokenize} = require('chinese-tokenizer')('./cedict.txt')
+console.log(tokenize('我是中国人。'))
 ~~~
 
 ~~~js
-const tokenizer = require('./index')('./cedict.txt', 'traditional')
-console.log(tokenizer.tokenize('我是中國人。'))
+const {tokenize} = require('chinese-tokenizer')('./cedict.txt', 'traditional')
+console.log(tokenize('我是中國人。'))
 ~~~
 
 Output:
