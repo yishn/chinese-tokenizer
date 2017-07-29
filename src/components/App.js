@@ -1,5 +1,7 @@
 import {h, Component} from 'preact'
-import appState from '../appState'
+import * as appState from '../appState'
+
+import LoadScreen from './LoadScreen'
 
 export default class App extends Component {
     constructor() {
@@ -9,8 +11,10 @@ export default class App extends Component {
     }
 
     render() {
-        return <section id="root">
-            <h1>Hello World!</h1>
-        </section>
+        return <section id="root">{
+            this.state.loading
+            ? <LoadScreen/>
+            : null
+        }</section>
     }
 }

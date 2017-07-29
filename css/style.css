@@ -2,3 +2,62 @@
     margin: 0;
     padding: 0;
 }
+
+/* LoadScreen */
+
+#load-screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#load-screen .throbber {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -40px;
+    margin-top: -40px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(to right, black 10%, transparent 42%);
+    animation: throbber 1.4s infinite linear;
+    transform: translateZ(0);
+    opacity: .7;
+}
+
+#load-screen .throbber:before {
+    content: '';
+    width: 50%;
+    height: 50%;
+    background: black;
+    border-radius: 100% 0 0 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#load-screen .throbber:after {
+    background: white;
+    width: 75%;
+    height: 75%;
+    border-radius: 50%;
+    content: '';
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+@keyframes throbber {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
