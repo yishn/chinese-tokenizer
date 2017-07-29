@@ -327,6 +327,21 @@ var App = function (_Component) {
     }
 
     _createClass(App, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            // Load dictionary
+
+            fetch('./data/cedict_ts.u8').then(function (res) {
+                return res.ok ? res.text() : Promise.reject(new Error());
+            }).then(function (data) {
+                return _this2.setState(function (state) {
+                    return __WEBPACK_IMPORTED_MODULE_1__appState__["b" /* loadDictionary */](state, data);
+                });
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
@@ -348,7 +363,7 @@ var App = function (_Component) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return initState; });
-/* unused harmony export loadDictionary */
+/* harmony export (immutable) */ __webpack_exports__["b"] = loadDictionary;
 var initState = {
     loading: true
 };
