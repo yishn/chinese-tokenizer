@@ -1,3 +1,3 @@
-export function readFileSync(path) {
+export function readFileSync() {
     return window.cedictData
 }
