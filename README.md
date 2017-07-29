@@ -2,6 +2,10 @@
 
 Tokenizes Chinese texts into words using [CC-CEDICT](https://cc-cedict.org/).
 
+## How this works
+
+This tokenizer uses a simple greedy algorithm: It always looks for the longest word in the CC-CEDICT dictionary that matches the input, one at a time.
+
 ## Installation
 
 Use npm to install:
@@ -48,3 +52,4 @@ Output:
     pinyinPretty: null,
     english: null } ]
 ~~~
+
