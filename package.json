@@ -11,7 +11,8 @@
     "chinese",
     "text",
     "tokenizer",
-    "word"
+    "words",
+    "language"
   ],
   "author": "Yichuan Shen",
   "license": "MIT",
