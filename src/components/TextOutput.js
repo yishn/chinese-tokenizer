@@ -6,7 +6,9 @@ import WordToken from './WordToken'
 let tokenEqual = (t1, t2) => t1 == null || t2 == null ? t1 == t2 : t1.simplified === t2.simplified
 
 export default class TextOutput extends Component {
-    componentDidMount() {
+    constructor() {
+        super()
+
         // Load tokenizers
 
         this.types = ['simplified', 'traditional']
@@ -14,8 +16,6 @@ export default class TextOutput extends Component {
     }
 
     render() {
-        if (this.tokenizers == null) return
-
         let allTokens = this.tokenizers.map(t => t.tokenize(this.props.value))
         let errorCount = allTokens.map(tokens => tokens.filter(x => x.pinyin == null).length)
         let index = errorCount[1] < errorCount[0] ? 1 : 0

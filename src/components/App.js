@@ -6,6 +6,7 @@ import Introduction from './Introduction'
 import TextInput from './TextInput'
 import TypeChooser from './TypeChooser'
 import TextOutput from './TextOutput'
+import Dictionary from './Dictionary'
 
 export default class App extends Component {
     constructor() {
@@ -31,16 +32,10 @@ export default class App extends Component {
     }
 
     handleTokenClick = evt => {
-        let token = evt
-        let {highlight} = this.state
-
-        if (highlight != null && highlight.simplified === evt.simplified)
-            token = null
-
-        this.setState(state => appState.updateHighlight(state, token))
+        this.setState(state => appState.updateHighlight(state, evt))
     }
 
-    handleOutputClick = evt => {
+    handleClearHighlight = evt => {
         this.setState(state => appState.clearHighlight(state))
     }
 
@@ -67,8 +62,12 @@ export default class App extends Component {
                             type={this.state.type}
                             highlight={this.state.highlight}
 
-                            onClick={this.handleOutputClick}
+                            onClick={this.handleClearHighlight}
                             onTokenClick={this.handleTokenClick}
+                        />
+                        <Dictionary
+                            data={this.state.highlight}
+                            type={this.state.type}
                         />
                     </div>
                 </main>

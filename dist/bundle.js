@@ -297,6 +297,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0_preact__["render"])(Object(__WEBPACK_IMPORTED
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__TextInput__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__TypeChooser__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__TextOutput__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Dictionary__ = __webpack_require__(18);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -304,6 +305,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -335,18 +337,12 @@ var App = function (_Component) {
         };
 
         _this.handleTokenClick = function (evt) {
-            var token = evt;
-            var highlight = _this.state.highlight;
-
-
-            if (highlight != null && highlight.simplified === evt.simplified) token = null;
-
             _this.setState(function (state) {
-                return __WEBPACK_IMPORTED_MODULE_1__appState__["d" /* updateHighlight */](state, token);
+                return __WEBPACK_IMPORTED_MODULE_1__appState__["d" /* updateHighlight */](state, evt);
             });
         };
 
-        _this.handleOutputClick = function (evt) {
+        _this.handleClearHighlight = function (evt) {
             _this.setState(function (state) {
                 return __WEBPACK_IMPORTED_MODULE_1__appState__["a" /* clearHighlight */](state);
             });
@@ -402,8 +398,12 @@ var App = function (_Component) {
                             type: this.state.type,
                             highlight: this.state.highlight,
 
-                            onClick: this.handleOutputClick,
+                            onClick: this.handleClearHighlight,
                             onTokenClick: this.handleTokenClick
+                        }),
+                        Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_7__Dictionary__["a" /* default */], {
+                            data: this.state.highlight,
+                            type: this.state.type
                         })
                     )
                 )
@@ -600,25 +600,21 @@ var TextOutput = function (_Component) {
     function TextOutput() {
         _classCallCheck(this, TextOutput);
 
-        return _possibleConstructorReturn(this, (TextOutput.__proto__ || Object.getPrototypeOf(TextOutput)).apply(this, arguments));
+        // Load tokenizers
+
+        var _this = _possibleConstructorReturn(this, (TextOutput.__proto__ || Object.getPrototypeOf(TextOutput)).call(this));
+
+        _this.types = ['simplified', 'traditional'];
+        _this.tokenizers = _this.types.map(function (t) {
+            return __WEBPACK_IMPORTED_MODULE_1_chinese_tokenizer___default()('../../data/cedict_ts.u8', t);
+        });
+        return _this;
     }
 
     _createClass(TextOutput, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            // Load tokenizers
-
-            this.types = ['simplified', 'traditional'];
-            this.tokenizers = this.types.map(function (t) {
-                return __WEBPACK_IMPORTED_MODULE_1_chinese_tokenizer___default()('../../data/cedict_ts.u8', t);
-            });
-        }
-    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
-
-            if (this.tokenizers == null) return;
 
             var allTokens = this.tokenizers.map(function (t) {
                 return t.tokenize(_this2.props.value);
@@ -1287,6 +1283,75 @@ function Introduction() {
         )
     );
 }
+
+/***/ }),
+/* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var Dictionary = function (_Component) {
+    _inherits(Dictionary, _Component);
+
+    function Dictionary() {
+        _classCallCheck(this, Dictionary);
+
+        return _possibleConstructorReturn(this, (Dictionary.__proto__ || Object.getPrototypeOf(Dictionary)).apply(this, arguments));
+    }
+
+    _createClass(Dictionary, [{
+        key: "render",
+        value: function render() {
+            if (this.props.data == null) return;
+
+            var _props$data = this.props.data,
+                pinyin = _props$data.pinyin,
+                english = _props$data.english;
+
+
+            return Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+                "section",
+                { id: "dictionary", "class": "show" },
+                Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+                    "h1",
+                    null,
+                    this.props.data[this.props.type]
+                ),
+                Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+                    "p",
+                    { "class": "pinyin" },
+                    pinyin
+                ),
+                Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+                    "ul",
+                    null,
+                    english.split('\n').map(function (line) {
+                        return Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+                            "li",
+                            null,
+                            line
+                        );
+                    })
+                )
+            );
+        }
+    }]);
+
+    return Dictionary;
+}(__WEBPACK_IMPORTED_MODULE_0_preact__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Dictionary);
 
 /***/ })
 /******/ ]);
