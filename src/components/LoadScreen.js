@@ -6,7 +6,8 @@ export default class LoadScreen extends Component {
 
         return <section id="load-screen">
             <div class="throbber"/>
-            <p>{progress}% — Loading dictionary…</p>
+            <p class="progress">{progress}%</p>
+            <p class="text">Loading dictionary…</p>
         </section>
     }
 }

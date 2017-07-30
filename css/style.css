@@ -96,12 +96,19 @@ main {
 }
 
 #load-screen p {
-        position: absolute;
-        top: calc(50% + 50px);
-        width: 100%;
-        text-align: center;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin-top: -.5em;
+    line-height: 1em;
+    text-align: center;
+}
+
+#load-screen .text {
+        top: calc(50% + 50px + 1em);
+        color: #666;
     }
-    #load-screen p::before {
+    #load-screen .text::before {
         content: '…';
         opacity: 0;
 }
