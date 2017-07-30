@@ -110,7 +110,6 @@ main {
 
 #introduction {
     padding: 1em;
-    border-bottom: 1px solid #ccc;
 }
 
 #introduction p {
@@ -120,6 +119,8 @@ main {
 /* TextInput */
 
 #text-input {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     position: relative;
 }
 
@@ -187,7 +188,7 @@ main {
         cursor: pointer;
         transition: background .1s;
     }
-    #text-output .word:hover {
+    #text-output:not(.stop-hover) .word:hover, #text-output .word.highlight {
         background: #FFFF08;
 }
 
@@ -196,6 +197,8 @@ main {
         position: absolute;
         top: -1.2em;
         left: 50%;
+        padding: 0 5px;
+        background: white;
         color: black;
         font-size: .6em;
         opacity: 0;
@@ -203,6 +206,6 @@ main {
         transform: translateX(-50%);
         transition: opacity .2s;
     }
-    #text-output .word:hover::before {
+    #text-output:not(.stop-hover) .word:hover::before, #text-output .word.highlight::before {
         opacity: 1;
 }

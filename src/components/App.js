@@ -30,6 +30,20 @@ export default class App extends Component {
         this.setState(state => appState.updateType(state, evt.value))
     }
 
+    handleTokenClick = evt => {
+        let token = evt
+        let {highlight} = this.state
+
+        if (highlight != null && highlight.simplified === evt.simplified)
+            token = null
+
+        this.setState(state => appState.updateHighlight(state, token))
+    }
+
+    handleOutputClick = evt => {
+        this.setState(state => appState.clearHighlight(state))
+    }
+
     render() {
         return <section id="root">
             {this.state.loading && <LoadScreen/>}
@@ -51,7 +65,10 @@ export default class App extends Component {
                         <TextOutput
                             value={this.state.input}
                             type={this.state.type}
-                            onTokenClick={console.log}
+                            highlight={this.state.highlight}
+
+                            onClick={this.handleOutputClick}
+                            onTokenClick={this.handleTokenClick}
                         />
                     </div>
                 </main>

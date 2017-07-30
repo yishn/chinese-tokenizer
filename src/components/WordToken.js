@@ -2,13 +2,17 @@ import {h, Component} from 'preact'
 
 export default class WordToken extends Component {
     handleClick = evt => {
+        evt.stopPropagation()
+
         let {type, onClick = () => {}} = this.props
-        onClick({...evt.currentTarget.dataset, type})
+        let {traditional, simplified, pinyin, english} = evt.currentTarget.dataset
+
+        onClick({traditional, simplified, pinyin, english, type})
     }
 
     render() {
         return <span
-            class="word"
+            class={['word', this.props.highlight ? 'highlight' : ''].join(' ').trim()}
 
             data-traditional={this.props.traditional}
             data-simplified={this.props.simplified}

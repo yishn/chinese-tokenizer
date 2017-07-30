@@ -324,17 +324,35 @@ var App = function (_Component) {
 
         _this.handleInputChange = function (evt) {
             _this.setState(function (state) {
-                return __WEBPACK_IMPORTED_MODULE_1__appState__["c" /* updateInput */](state, evt.value);
+                return __WEBPACK_IMPORTED_MODULE_1__appState__["e" /* updateInput */](state, evt.value);
             });
         };
 
         _this.handleTypeChooserChange = function (evt) {
             _this.setState(function (state) {
-                return __WEBPACK_IMPORTED_MODULE_1__appState__["d" /* updateType */](state, evt.value);
+                return __WEBPACK_IMPORTED_MODULE_1__appState__["f" /* updateType */](state, evt.value);
             });
         };
 
-        _this.state = __WEBPACK_IMPORTED_MODULE_1__appState__["b" /* initState */];
+        _this.handleTokenClick = function (evt) {
+            var token = evt;
+            var highlight = _this.state.highlight;
+
+
+            if (highlight != null && highlight.simplified === evt.simplified) token = null;
+
+            _this.setState(function (state) {
+                return __WEBPACK_IMPORTED_MODULE_1__appState__["d" /* updateHighlight */](state, token);
+            });
+        };
+
+        _this.handleOutputClick = function (evt) {
+            _this.setState(function (state) {
+                return __WEBPACK_IMPORTED_MODULE_1__appState__["a" /* clearHighlight */](state);
+            });
+        };
+
+        _this.state = __WEBPACK_IMPORTED_MODULE_1__appState__["c" /* initState */];
         return _this;
     }
 
@@ -349,7 +367,7 @@ var App = function (_Component) {
                 return res.ok ? res.text() : Promise.reject(new Error());
             }).then(function (data) {
                 return _this2.setState(function (state) {
-                    return __WEBPACK_IMPORTED_MODULE_1__appState__["a" /* commitDictionary */](state, data);
+                    return __WEBPACK_IMPORTED_MODULE_1__appState__["b" /* commitDictionary */](state, data);
                 });
             });
         }
@@ -382,7 +400,10 @@ var App = function (_Component) {
                         Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_6__TextOutput__["a" /* default */], {
                             value: this.state.input,
                             type: this.state.type,
-                            onTokenClick: console.log
+                            highlight: this.state.highlight,
+
+                            onClick: this.handleOutputClick,
+                            onTokenClick: this.handleTokenClick
                         })
                     )
                 )
@@ -400,14 +421,17 @@ var App = function (_Component) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return initState; });
-/* harmony export (immutable) */ __webpack_exports__["a"] = commitDictionary;
-/* harmony export (immutable) */ __webpack_exports__["c"] = updateInput;
-/* harmony export (immutable) */ __webpack_exports__["d"] = updateType;
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return initState; });
+/* harmony export (immutable) */ __webpack_exports__["b"] = commitDictionary;
+/* harmony export (immutable) */ __webpack_exports__["e"] = updateInput;
+/* harmony export (immutable) */ __webpack_exports__["f"] = updateType;
+/* harmony export (immutable) */ __webpack_exports__["d"] = updateHighlight;
+/* harmony export (immutable) */ __webpack_exports__["a"] = clearHighlight;
 var initState = {
     loading: true,
     input: '',
-    type: 'simplified'
+    type: 'simplified',
+    highlight: null
 };
 
 function commitDictionary(state, data) {
@@ -425,6 +449,14 @@ function updateInput(state, value) {
 function updateType(state, value) {
     if (value === state.type) return {};
     return { type: value };
+}
+
+function updateHighlight(state, token) {
+    return { highlight: token };
+}
+
+function clearHighlight(state) {
+    return updateHighlight(state, null);
 }
 
 /***/ }),
@@ -558,6 +590,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+var tokenEqual = function tokenEqual(t1, t2) {
+    return t1 == null || t2 == null ? t1 == t2 : t1.simplified === t2.simplified;
+};
+
 var TextOutput = function (_Component) {
     _inherits(TextOutput, _Component);
 
@@ -593,17 +629,23 @@ var TextOutput = function (_Component) {
                 }).length;
             });
             var index = errorCount[1] < errorCount[0] ? 1 : 0;
-            var type = this.types[index];
             var tokens = allTokens[index];
 
             return Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
                 'section',
-                { id: 'text-output' },
+                {
+                    id: 'text-output',
+                    'class': this.props.highlight != null ? 'stop-hover' : '',
+                    onClick: this.props.onClick
+                },
                 tokens.map(function (token) {
                     return token.pinyin != null ? Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_2__WordToken__["a" /* default */], _extends({}, token, {
+
+                        highlight: tokenEqual(token, _this2.props.highlight),
                         type: _this2.props.type,
-                        onClick: _this2.propsTokenClick
-                    })) : token[type] === '\n' ? Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])('br', null) : token[type];
+
+                        onClick: _this2.props.onTokenClick
+                    })) : token[_this2.props.type] === '\n' ? Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])('br', null) : token[_this2.props.type];
                 })
             );
         }
@@ -1062,8 +1104,6 @@ function sigmund(subject, maxSessions) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1089,27 +1129,35 @@ var WordToken = function (_Component) {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WordToken.__proto__ || Object.getPrototypeOf(WordToken)).call.apply(_ref, [this].concat(args))), _this), _this.handleClick = function (evt) {
+            evt.stopPropagation();
+
             var _this$props = _this.props,
                 type = _this$props.type,
                 _this$props$onClick = _this$props.onClick,
                 onClick = _this$props$onClick === undefined ? function () {} : _this$props$onClick;
+            var _evt$currentTarget$da = evt.currentTarget.dataset,
+                traditional = _evt$currentTarget$da.traditional,
+                simplified = _evt$currentTarget$da.simplified,
+                pinyin = _evt$currentTarget$da.pinyin,
+                english = _evt$currentTarget$da.english;
 
-            onClick(_extends({}, evt.currentTarget.dataset, { type: type }));
+
+            onClick({ traditional: traditional, simplified: simplified, pinyin: pinyin, english: english, type: type });
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(WordToken, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             return Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-                "span",
+                'span',
                 {
-                    "class": "word",
+                    'class': ['word', this.props.highlight ? 'highlight' : ''].join(' ').trim(),
 
-                    "data-traditional": this.props.traditional,
-                    "data-simplified": this.props.simplified,
-                    "data-pinyin": this.props.pinyinPretty,
-                    "data-english": this.props.english,
+                    'data-traditional': this.props.traditional,
+                    'data-simplified': this.props.simplified,
+                    'data-pinyin': this.props.pinyinPretty,
+                    'data-english': this.props.english,
 
                     onClick: this.handleClick
                 },

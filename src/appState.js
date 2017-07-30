@@ -1,7 +1,8 @@
 export const initState = {
     loading: true,
     input: '',
-    type: 'simplified'
+    type: 'simplified',
+    highlight: null
 }
 
 export function commitDictionary(state, data) {
@@ -20,4 +21,12 @@ export function updateInput(state, value) {
 export function updateType(state, value) {
     if (value === state.type) return {}
     return {type: value}
+}
+
+export function updateHighlight(state, token) {
+    return {highlight: token}
+}
+
+export function clearHighlight(state) {
+    return updateHighlight(state, null)
 }
