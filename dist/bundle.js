@@ -294,7 +294,8 @@ Object(__WEBPACK_IMPORTED_MODULE_0_preact__["render"])(Object(__WEBPACK_IMPORTED
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__appState__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LoadScreen__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__TextInput__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__TextOutput__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__TypeChooser__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__TextOutput__ = __webpack_require__(6);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -302,6 +303,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -321,6 +323,12 @@ var App = function (_Component) {
         _this.handleInputChange = function (evt) {
             _this.setState(function (state) {
                 return __WEBPACK_IMPORTED_MODULE_1__appState__["c" /* updateInput */](state, evt.value);
+            });
+        };
+
+        _this.handleTypeChooserChange = function (evt) {
+            _this.setState(function (state) {
+                return __WEBPACK_IMPORTED_MODULE_1__appState__["d" /* updateType */](state, evt.value);
             });
         };
 
@@ -357,9 +365,19 @@ var App = function (_Component) {
                         value: this.state.input,
                         onChange: this.handleInputChange
                     }),
-                    Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextOutput__["a" /* default */], {
-                        value: this.state.input
-                    })
+                    Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+                        'section',
+                        { id: 'output' },
+                        Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TypeChooser__["a" /* default */], {
+                            value: this.state.type,
+                            onChange: this.handleTypeChooserChange
+                        }),
+                        Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_5__TextOutput__["a" /* default */], {
+                            value: this.state.input,
+                            type: this.state.type,
+                            onTokenClick: console.log
+                        })
+                    )
                 )
             );
         }
@@ -378,9 +396,11 @@ var App = function (_Component) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return initState; });
 /* harmony export (immutable) */ __webpack_exports__["a"] = commitDictionary;
 /* harmony export (immutable) */ __webpack_exports__["c"] = updateInput;
+/* harmony export (immutable) */ __webpack_exports__["d"] = updateType;
 var initState = {
     loading: true,
-    input: ''
+    input: '',
+    type: 'simplified'
 };
 
 function commitDictionary(state, data) {
@@ -393,6 +413,11 @@ function commitDictionary(state, data) {
 function updateInput(state, value) {
     if (value === state.input) return {};
     return { input: value };
+}
+
+function updateType(state, value) {
+    if (value === state.type) return {};
+    return { type: value };
 }
 
 /***/ }),
@@ -564,17 +589,14 @@ var TextOutput = function (_Component) {
             var type = this.types[index];
             var tokens = allTokens[index];
 
-            var value = tokens.map(function (x) {
-                return x[type];
-            }).join('').replace(/\r/g, '').split(/\n\n+/).map(function (x) {
-                return x.split('\n');
-            });
-
             return Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
                 'section',
                 { id: 'text-output' },
                 tokens.map(function (token) {
-                    return token.pinyin != null ? Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_2__WordToken__["a" /* default */], _extends({}, token, { type: type })) : token[type] === '\n' ? Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])('br', null) : token[type];
+                    return token.pinyin != null ? Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_2__WordToken__["a" /* default */], _extends({}, token, {
+                        type: _this2.props.type,
+                        onClick: _this2.propsTokenClick
+                    })) : token[type] === '\n' ? Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])('br', null) : token[type];
                 })
             );
         }
@@ -1033,6 +1055,8 @@ function sigmund(subject, maxSessions) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1047,9 +1071,24 @@ var WordToken = function (_Component) {
     _inherits(WordToken, _Component);
 
     function WordToken() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
         _classCallCheck(this, WordToken);
 
-        return _possibleConstructorReturn(this, (WordToken.__proto__ || Object.getPrototypeOf(WordToken)).apply(this, arguments));
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WordToken.__proto__ || Object.getPrototypeOf(WordToken)).call.apply(_ref, [this].concat(args))), _this), _this.handleClick = function (evt) {
+            var _this$props = _this.props,
+                type = _this$props.type,
+                _this$props$onClick = _this$props.onClick,
+                onClick = _this$props$onClick === undefined ? function () {} : _this$props$onClick;
+
+            onClick(_extends({}, evt.currentTarget.dataset, { type: type }));
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(WordToken, [{
@@ -1059,12 +1098,13 @@ var WordToken = function (_Component) {
                 "span",
                 {
                     "class": "word",
-                    title: this.props.english,
 
                     "data-traditional": this.props.traditional,
                     "data-simplified": this.props.simplified,
                     "data-pinyin": this.props.pinyinPretty,
-                    "data-english": this.props.english
+                    "data-english": this.props.english,
+
+                    onClick: this.handleClick
                 },
                 this.props[this.props.type]
             );
@@ -1075,6 +1115,92 @@ var WordToken = function (_Component) {
 }(__WEBPACK_IMPORTED_MODULE_0_preact__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (WordToken);
+
+/***/ }),
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var TypeChooser = function (_Component) {
+    _inherits(TypeChooser, _Component);
+
+    function TypeChooser() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, TypeChooser);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TypeChooser.__proto__ || Object.getPrototypeOf(TypeChooser)).call.apply(_ref, [this].concat(args))), _this), _this.handleClick = function (evt) {
+            evt.preventDefault();
+
+            var value = evt.currentTarget.parentNode.dataset.value;
+            var _this$props$onChange = _this.props.onChange,
+                onChange = _this$props$onChange === undefined ? function () {} : _this$props$onChange;
+
+
+            if (_this.props.value !== value) onChange({ value: value });
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(TypeChooser, [{
+        key: "render",
+        value: function render() {
+            return Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+                "section",
+                { id: "type-chooser" },
+                Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+                    "ul",
+                    null,
+                    Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+                        "li",
+                        {
+                            "data-value": "simplified",
+                            "class": this.props.value === 'simplified' ? 'current' : ''
+                        },
+                        Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+                            "a",
+                            { href: "#", onClick: this.handleClick },
+                            "Simplified"
+                        )
+                    ),
+                    Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+                        "li",
+                        {
+                            "data-value": "traditional",
+                            "class": this.props.value === 'traditional' ? 'current' : ''
+                        },
+                        Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+                            "a",
+                            { href: "#", onClick: this.handleClick },
+                            "Traditional"
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return TypeChooser;
+}(__WEBPACK_IMPORTED_MODULE_0_preact__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (TypeChooser);
 
 /***/ })
 /******/ ]);

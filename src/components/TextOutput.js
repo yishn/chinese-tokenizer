@@ -20,14 +20,14 @@ export default class TextOutput extends Component {
         let type = this.types[index]
         let tokens = allTokens[index]
 
-        let value = tokens.map(x => x[type]).join('')
-            .replace(/\r/g, '')
-            .split(/\n\n+/)
-            .map(x => x.split('\n'))
-
         return <section id="text-output">
             {tokens.map(token =>
-                token.pinyin != null ? <WordToken {...token} type={type} />
+                token.pinyin != null ?
+                <WordToken
+                    {...token}
+                    type={this.props.type}
+                    onClick={this.propsTokenClick}
+                />
                 : token[type] === '\n' ? <br/>
                 : token[type]
             )}

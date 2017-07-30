@@ -1,6 +1,7 @@
 export const initState = {
     loading: true,
-    input: ''
+    input: '',
+    type: 'simplified'
 }
 
 export function commitDictionary(state, data) {
@@ -14,4 +15,9 @@ export function commitDictionary(state, data) {
 export function updateInput(state, value) {
     if (value === state.input) return {}
     return {input: value}
+}
+
+export function updateType(state, value) {
+    if (value === state.type) return {}
+    return {type: value}
 }

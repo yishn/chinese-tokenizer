@@ -3,6 +3,7 @@ import * as appState from '../appState'
 
 import LoadScreen from './LoadScreen'
 import TextInput from './TextInput'
+import TypeChooser from './TypeChooser'
 import TextOutput from './TextOutput'
 
 export default class App extends Component {
@@ -24,6 +25,10 @@ export default class App extends Component {
         this.setState(state => appState.updateInput(state, evt.value))
     }
 
+    handleTypeChooserChange = evt => {
+        this.setState(state => appState.updateType(state, evt.value))
+    }
+
     render() {
         return <section id="root">
             {this.state.loading && <LoadScreen/>}
@@ -34,9 +39,17 @@ export default class App extends Component {
                         value={this.state.input}
                         onChange={this.handleInputChange}
                     />
-                    <TextOutput
-                        value={this.state.input}
-                    />
+                    <section id="output">
+                        <TypeChooser
+                            value={this.state.type}
+                            onChange={this.handleTypeChooserChange}
+                        />
+                        <TextOutput
+                            value={this.state.input}
+                            type={this.state.type}
+                            onTokenClick={console.log}
+                        />
+                    </section>
                 </main>
             }
         </section>
