@@ -1,6 +1,13 @@
 import {h, Component} from 'preact'
 
 export default class WordToken extends Component {
+    shouldComponentUpdate(nextProps) {
+        return nextProps.traditional !== this.props.traditional
+            || nextProps.highlight !== this.props.highlight
+            || nextProps.type !== this.props.type
+            || nextProps.onClick !== this.props.onClick
+    }
+
     handleClick = evt => {
         evt.stopPropagation()
 

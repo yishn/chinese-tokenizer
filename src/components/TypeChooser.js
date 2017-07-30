@@ -1,13 +1,18 @@
 import {h, Component} from 'preact'
 
 export default class TypeChooser extends Component {
+    shouldComponentUpdate(nextProps) {
+        return nextProps.value !== this.props.value
+            || nextProps.onChange !== this.props.onChange
+    }
+
     handleClick = evt => {
         evt.preventDefault()
 
         let {value} = evt.currentTarget.parentNode.dataset
         let {onChange = () => {}} = this.props
 
-        if (this.props.value !== value) onChange({value})
+        onChange({value})
     }
 
     render() {

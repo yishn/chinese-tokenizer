@@ -191,7 +191,8 @@ body, textarea {
 
 #text-output {
     padding: 1em;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     font-size: 1.3em;
     line-height: 1.1;
 }
@@ -231,13 +232,14 @@ body, textarea {
 
 #dictionary {
     display: grid;
+    grid-template: auto 1fr / auto 1fr;
+    grid-gap: .5em 1em;
     position: relative;
     padding: 1em;
     max-height: 200px;
-    grid-template: auto 1fr / auto 1fr;
-    grid-gap: .5em 1em;
+    overflow-y: auto;
+    overflow-x: hidden;
     background: #eee;
-    overflow: auto;
 }
 
 #dictionary .close {
