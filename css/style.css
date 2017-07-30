@@ -11,30 +11,40 @@ body, textarea {
     color: #333;
 }
 
-#root, main {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
+/* Layout */
+
+@media only screen and (min-width: 500px) {
+    #root, main {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    main {
+        display: grid;
+        grid-template-columns: minmax(250px, 33%) 1fr;
+    }
+
+    #input {
+        display: grid;
+        border-right: 1px solid #ccc;
+        grid-template-rows: auto 1fr;
+        overflow: hidden;
+    }
+
+    #output {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        overflow: hidden;
+    }
 }
 
-main {
-    display: grid;
-    grid-template-columns: minmax(250px, 33%) 1fr;
-}
-
-#input {
-    display: grid;
-    border-right: 1px solid #ccc;
-    grid-template-rows: auto 1fr;
-    overflow: hidden;
-}
-
-#output {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    overflow: hidden;
+@media only screen and (max-width: 500px) {
+    #text-input {
+        height: 300px;
+    }
 }
 
 /* LoadScreen */
@@ -220,12 +230,14 @@ main {
 /* Dictionary */
 
 #dictionary {
-    position: relative;
     display: grid;
+    position: relative;
+    padding: 1em;
+    max-height: 200px;
     grid-template: auto 1fr / auto 1fr;
     grid-gap: .5em 1em;
     background: #eee;
-    padding: 1em;
+    overflow: auto;
 }
 
 #dictionary .close {
