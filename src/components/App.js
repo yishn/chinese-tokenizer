@@ -18,9 +18,22 @@ export default class App extends Component {
     componentDidMount() {
         // Load dictionary
 
-        fetch('./data/cedict_ts.u8')
-        .then(res => res.ok ? res.text() : Promise.reject(new Error()))
-        .then(data => this.setState(state => appState.commitDictionary(state, data)))
+        let request = new XMLHttpRequest()
+
+        request.addEventListener('progress', evt => {
+            if (evt.lengthComputable) {
+                let percent = evt.loaded / evt.total
+                this.setState(state => appState.updateProgress(state, percent))
+            }
+        })
+
+        request.addEventListener('load', evt => {
+            let {responseText} = evt.currentTarget
+            this.setState(state => appState.commitDictionary(state, responseText))
+        })
+
+        request.open('GET', './data/cedict_ts.u8')
+        request.send()
     }
 
     handleInputChange = evt => {
@@ -41,9 +54,11 @@ export default class App extends Component {
 
     render() {
         return <section id="root">
-            {this.state.loading && <LoadScreen/>}
+            {this.state.loading <= 1 &&
+                <LoadScreen progress={this.state.loading} />
+            }
 
-            {!this.state.loading &&
+            {this.state.loading > 1 &&
                 <main>
                     <div id="input">
                         <Introduction/>

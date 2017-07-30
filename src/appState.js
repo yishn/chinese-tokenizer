@@ -1,16 +1,18 @@
 export const initState = {
-    loading: true,
+    loading: 0,
     input: '',
     type: 'simplified',
     highlight: null
 }
 
 export function commitDictionary(state, data) {
-    if (!state.loading || window.cedictData != null)
-        return {}
-
     window.cedictData = data
-    return {loading: false}
+    return {loading: Infinity}
+}
+
+export function updateProgress(state, value) {
+    if (value === state.loading) return {}
+    return {loading: value}
 }
 
 export function updateInput(state, value) {

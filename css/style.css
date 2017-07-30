@@ -218,7 +218,6 @@ main {
     grid-gap: .5em 1em;
     background: #eee;
     padding: 1em;
-    overflow: auto;
 }
 
 #dictionary h1 {

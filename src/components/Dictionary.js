@@ -13,7 +13,7 @@ export default class Dictionary extends Component {
 
             <ul>
                 {english.split('\n').map(line =>
-                    <li>{line}</li>
+                    <li>{line.replace(/\//g, ', ')}</li>
                 )}
             </ul>
         </section>
