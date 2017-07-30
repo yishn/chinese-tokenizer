@@ -1,4 +1,5 @@
 import {h, Component} from 'preact'
+import smartypants from '../smartypants'
 
 export default class Dictionary extends Component {
     render() {
@@ -13,7 +14,7 @@ export default class Dictionary extends Component {
 
             <ul>
                 {english.split('\n').map(line =>
-                    <li>{line.replace(/\//g, ', ')}</li>
+                    <li>{smartypants(line.replace(/\//g, ', '))}</li>
                 )}
             </ul>
         </section>
