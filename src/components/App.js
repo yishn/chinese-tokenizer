@@ -2,6 +2,7 @@ import {h, Component} from 'preact'
 import * as appState from '../appState'
 
 import LoadScreen from './LoadScreen'
+import Introduction from './Introduction'
 import TextInput from './TextInput'
 import TypeChooser from './TypeChooser'
 import TextOutput from './TextOutput'
@@ -35,11 +36,14 @@ export default class App extends Component {
 
             {!this.state.loading &&
                 <main>
-                    <TextInput
-                        value={this.state.input}
-                        onChange={this.handleInputChange}
-                    />
-                    <section id="output">
+                    <div id="input">
+                        <Introduction/>
+                        <TextInput
+                            value={this.state.input}
+                            onChange={this.handleInputChange}
+                        />
+                    </div>
+                    <div id="output">
                         <TypeChooser
                             value={this.state.type}
                             onChange={this.handleTypeChooserChange}
@@ -49,7 +53,7 @@ export default class App extends Component {
                             type={this.state.type}
                             onTokenClick={console.log}
                         />
-                    </section>
+                    </div>
                 </main>
             }
         </section>

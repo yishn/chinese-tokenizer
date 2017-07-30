@@ -293,9 +293,10 @@ Object(__WEBPACK_IMPORTED_MODULE_0_preact__["render"])(Object(__WEBPACK_IMPORTED
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__appState__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LoadScreen__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__TextInput__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__TypeChooser__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__TextOutput__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Introduction__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__TextInput__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__TypeChooser__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__TextOutput__ = __webpack_require__(6);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -303,6 +304,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -361,18 +363,23 @@ var App = function (_Component) {
                 !this.state.loading && Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
                     'main',
                     null,
-                    Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__TextInput__["a" /* default */], {
-                        value: this.state.input,
-                        onChange: this.handleInputChange
-                    }),
                     Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-                        'section',
+                        'div',
+                        { id: 'input' },
+                        Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_3__Introduction__["a" /* default */], null),
+                        Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TextInput__["a" /* default */], {
+                            value: this.state.input,
+                            onChange: this.handleInputChange
+                        })
+                    ),
+                    Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+                        'div',
                         { id: 'output' },
-                        Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_4__TypeChooser__["a" /* default */], {
+                        Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_5__TypeChooser__["a" /* default */], {
                             value: this.state.type,
                             onChange: this.handleTypeChooserChange
                         }),
-                        Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_5__TextOutput__["a" /* default */], {
+                        Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(__WEBPACK_IMPORTED_MODULE_6__TextOutput__["a" /* default */], {
                             value: this.state.input,
                             type: this.state.type,
                             onTokenClick: console.log
@@ -1201,6 +1208,37 @@ var TypeChooser = function (_Component) {
 }(__WEBPACK_IMPORTED_MODULE_0_preact__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (TypeChooser);
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = Introduction;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
+
+
+function Introduction() {
+    return Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+        'section',
+        { id: 'introduction' },
+        Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+            'h1',
+            null,
+            'Chinese Tokenizer'
+        ),
+        Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+            'p',
+            null,
+            ['This is a tool that can tokenize Chinese texts into words using ', Object(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
+                'a',
+                { href: 'https://github.com/yishn/chinese-tokenizer' },
+                'chinese-tokenizer'
+            ), '. Just paste your text down below:']
+        )
+    );
+}
 
 /***/ })
 /******/ ]);

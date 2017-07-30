@@ -21,7 +21,20 @@ body, textarea {
 
 main {
     display: grid;
-    grid-template-columns: 33% auto;
+    grid-template-columns: minmax(250px, 33%) 1fr;
+}
+
+#input {
+    display: grid;
+    border-right: 1px solid #ccc;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+}
+
+#output {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
 }
 
 /* LoadScreen */
@@ -93,11 +106,21 @@ main {
         opacity: 0;
 }
 
+/* Introduction */
+
+#introduction {
+    padding: 1em;
+    border-bottom: 1px solid #ccc;
+}
+
+#introduction p {
+    margin-top: 1em;
+}
+
 /* TextInput */
 
 #text-input {
     position: relative;
-    border-right: 1px solid #ccc;
 }
 
 #text-input textarea {
