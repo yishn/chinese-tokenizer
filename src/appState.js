@@ -6,7 +6,7 @@ export const initState = {
 }
 
 export function commitDictionary(state, data) {
-    window.cedictData = data
+    window.cedictData = data.replace(/\r/g, '').replace(/\n/g, '\r\n')
     return {loading: Infinity}
 }
 
