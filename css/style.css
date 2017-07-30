@@ -105,7 +105,7 @@ main {
 }
 
 #load-screen .text {
-        top: calc(50% + 50px + 1em);
+        top: calc(50% + 50px + 1.5em);
         color: #666;
     }
     #load-screen .text::before {
@@ -220,11 +220,18 @@ main {
 /* Dictionary */
 
 #dictionary {
+    position: relative;
     display: grid;
     grid-template: auto 1fr / auto 1fr;
     grid-gap: .5em 1em;
     background: #eee;
     padding: 1em;
+}
+
+#dictionary .close {
+    position: absolute;
+    right: 1em;
+    top: 1em;
 }
 
 #dictionary h1 {
@@ -233,7 +240,7 @@ main {
     font-size: 2em;
 }
 
-#dictionary .pinyin {
+#dictionary .pinyin, #dictionary .close {
     font-size: .8em;
     color: #555;
 }

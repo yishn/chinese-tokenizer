@@ -83,6 +83,7 @@ export default class App extends Component {
                         <Dictionary
                             data={this.state.highlight}
                             type={this.state.type}
+                            onCloseClick={this.handleClearHighlight}
                         />
                     </div>
                 </main>
