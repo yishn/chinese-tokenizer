@@ -9,6 +9,7 @@ export default class TextInput extends Component {
     render() {
         return <section id="text-input">
             <textarea
+                autofocus
                 value={this.props.value}
                 onInput={this.handleInput}
             />

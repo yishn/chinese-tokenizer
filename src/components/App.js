@@ -3,6 +3,7 @@ import * as appState from '../appState'
 
 import LoadScreen from './LoadScreen'
 import TextInput from './TextInput'
+import TextOutput from './TextOutput'
 
 export default class App extends Component {
     constructor() {
@@ -32,6 +33,9 @@ export default class App extends Component {
                     <TextInput
                         value={this.state.input}
                         onChange={this.handleInputChange}
+                    />
+                    <TextOutput
+                        value={this.state.input}
                     />
                 </main>
             }

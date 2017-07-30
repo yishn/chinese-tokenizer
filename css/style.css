@@ -1,6 +1,22 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin-ext');
+
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body, textarea {
+    font: 100%/1.5 'Open Sans', 'Microsoft Yahei', '微软雅黑', STXihei, '华文细黑', sans-serif;
+    color: #333;
+}
+
+#root, main {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
 }
 
 /* LoadScreen */
@@ -22,24 +38,23 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: linear-gradient(to right, black 10%, transparent 42%);
+    background: linear-gradient(to right, #333 10%, transparent 42%);
     animation: throbber 1.4s infinite linear;
     transform: translateZ(0);
-    opacity: .7;
 }
 
-#load-screen .throbber:before {
+#load-screen .throbber::before {
     content: '';
     width: 50%;
     height: 50%;
-    background: black;
+    background: #333;
     border-radius: 100% 0 0 0;
     position: absolute;
     top: 0;
     left: 0;
 }
 
-#load-screen .throbber:after {
+#load-screen .throbber::after {
     background: white;
     width: 75%;
     height: 75%;
@@ -60,4 +75,43 @@
     100% {
         transform: rotate(360deg);
     }
+}
+
+#load-screen p {
+        position: absolute;
+        top: calc(50% + 50px);
+        width: 100%;
+        text-align: center;
+    }
+    #load-screen p::before {
+        content: '…';
+        opacity: 0;
+}
+
+/* Main */
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+/* TextInput */
+
+#text-input {
+    position: relative;
+    border-right: 1px solid #ccc;
+}
+
+#text-input textarea {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        padding: 1em;
+        resize: none;
+    }
+    #text-input textarea:focus {
+        outline: none;
 }
