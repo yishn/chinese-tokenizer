@@ -115,3 +115,41 @@ main {
     #text-input textarea:focus {
         outline: none;
 }
+
+/* TextOutput */
+
+#text-output {
+    padding: 1em;
+    overflow: auto;
+    font-size: 1.3em;
+    line-height: 1.1;
+}
+
+/* WordToken */
+
+#text-output .word {
+        display: inline-block;
+        position: relative;
+        margin: .5em 0;
+        cursor: pointer;
+        transition: background .1s;
+    }
+    #text-output .word:hover {
+        background: #FFFF08;
+}
+
+#text-output .word::before {
+        content: attr(data-pinyin);
+        position: absolute;
+        top: -1.2em;
+        left: 50%;
+        color: black;
+        font-size: .6em;
+        opacity: 0;
+        white-space: nowrap;
+        transform: translateX(-50%);
+        transition: opacity .2s;
+    }
+    #text-output .word:hover::before {
+        opacity: 1;
+}

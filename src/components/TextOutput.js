@@ -1,7 +1,36 @@
 import {h, Component} from 'preact'
+import loadTokenizer from 'chinese-tokenizer'
+
+import WordToken from './WordToken'
 
 export default class TextOutput extends Component {
+    componentDidMount() {
+        // Load tokenizers
+
+        this.types = ['simplified', 'traditional']
+        this.tokenizers = this.types.map(t => loadTokenizer('../../data/cedict_ts.u8', t))
+    }
+
     render() {
-        return <section id="text-output"></section>
+        if (this.tokenizers == null) return
+
+        let allTokens = this.tokenizers.map(t => t.tokenize(this.props.value))
+        let errorCount = allTokens.map(tokens => tokens.filter(x => x.pinyin == null).length)
+        let index = errorCount[1] < errorCount[0] ? 1 : 0
+        let type = this.types[index]
+        let tokens = allTokens[index]
+
+        let value = tokens.map(x => x[type]).join('')
+            .replace(/\r/g, '')
+            .split(/\n\n+/)
+            .map(x => x.split('\n'))
+
+        return <section id="text-output">
+            {tokens.map(token =>
+                token.pinyin != null ? <WordToken {...token} type={type} />
+                : token[type] === '\n' ? <br/>
+                : token[type]
+            )}
+        </section>
     }
 }
