@@ -1,6 +1,6 @@
 # chinese-tokenizer
 
-Tokenizes Chinese texts into words using [CC-CEDICT](https://cc-cedict.org/).
+Tokenizes Chinese texts into words using [CC-CEDICT](https://cc-cedict.org/). You can try it out at [the demo page](https://yishn.github.io/chinese-tokenizer/).
 
 ## How this works
 
@@ -52,4 +52,3 @@ Output:
     pinyinPretty: null,
     english: null } ]
 ~~~
-
