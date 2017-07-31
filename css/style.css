@@ -222,7 +222,7 @@ body, textarea {
         opacity: 0;
         white-space: nowrap;
         transform: translateX(-50%);
-        transition: opacity .2s;
+        pointer-events: none;
     }
     #text-output:not(.stop-hover) .word:hover::before, #text-output .word.highlight::before {
         opacity: 1;
