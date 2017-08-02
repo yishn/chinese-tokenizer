@@ -1,7 +1,7 @@
 import {h, Component} from 'preact'
 import smartypants from '../smartypants'
 
-let tokenEqual = (t1, t2) => t1 == null || t2 == null ? t1 == t2 : t1.simplified === t2.simplified
+let tokenEqual = (t1, t2) => t1 == null || t2 == null ? t1 == t2 : t1.traditional === t2.traditional
 
 export default class Dictionary extends Component {
     shouldComponentUpdate(nextProps) {
