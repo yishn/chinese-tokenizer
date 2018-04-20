@@ -1,8 +1,8 @@
 {
   "name": "chinese-tokenizer",
-  "version": "0.1.2",
-  "description": "Tokenizes Chinese texts into words.",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "Simple algorithm to tokenize Chinese texts into words using CC-CEDICT.",
+  "main": "main.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yishn/chinese-tokenizer.git"
@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/yishn/chinese-tokenizer/issues"
   },
-  "homepage": "https://github.com/yishn/chinese-tokenizer#readme",
+  "homepage": "https://github.com/yishn/chinese-tokenizer",
   "dependencies": {
     "cedict-lookup": "0.0.2",
     "dedupe": "^2.0.3",
