@@ -21,7 +21,6 @@
   },
   "homepage": "https://github.com/yishn/chinese-tokenizer",
   "dependencies": {
-    "cedict-lookup": "0.0.2",
     "prettify-pinyin": "^0.1.5"
   }
 }

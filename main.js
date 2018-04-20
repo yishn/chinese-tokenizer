@@ -1,4 +1,4 @@
-const cedict = require('cedict-lookup')
+const cedict = require('./cedict-lookup')
 const {prettify} = require('prettify-pinyin')
 
 function load(path, type) {

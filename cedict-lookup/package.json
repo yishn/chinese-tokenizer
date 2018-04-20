@@ -1,0 +1,27 @@
+{
+  "name": "cedict-lookup",
+  "version": "0.0.1",
+  "description": "Look up Chinese words in CC-CEDICT",
+  "main": "src/cedict.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takumif/cedict-lookup.git"
+  },
+  "keywords": [
+    "Chinese",
+    "Dictionary",
+    "CC-CEDICT"
+  ],
+  "author": "Takumi Fujimoto",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/takumif/cedict-lookup/issues"
+  },
+  "homepage": "https://github.com/takumif/cedict-lookup#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-typedoc": "^2.0.0",
+    "gulp-typescript": "^2.13.4",
+    "typedoc": "^0.3.12"
+  }
+}
