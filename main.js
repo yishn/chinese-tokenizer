@@ -18,7 +18,7 @@ function load(path, type) {
                 simplified: matches[0] ? matches[0].simplified : text,
 
                 matches: matches.map(match => {
-                    let pinyin = match.pinyin.trim().toLowerCase()
+                    let pinyin = match.pinyin.trim()
 
                     return {
                         pinyin,
