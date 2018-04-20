@@ -1,5 +1,7 @@
-const tokenizer = require('.')('./cedict.txt')
-console.log(tokenizer.tokenize('我是中国人。'))
+const tokenizer = require('.')
 
-const tokenizer = require('.')('./cedict.txt', 'traditional')
-console.log(tokenizer.tokenize('我是中國人。'))
+let tokenize = tokenizer.loadSimplified('./cedict_ts.u8')
+console.log(JSON.stringify(tokenize('我是中国人。'), null, '  '))
+
+let ttokenize = tokenizer.loadTraditional('./cedict_ts.u8')
+console.log(JSON.stringify(ttokenize('我是中國人。'), null, '  '))

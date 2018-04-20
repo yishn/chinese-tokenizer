@@ -1,9 +1,10 @@
 const cedict = require('cedict-lookup')
-const dedupe = require('dedupe')
-const pinyin = require('prettify-pinyin')
+const {prettify} = require('prettify-pinyin')
 
 function load(path, type) {
-    let dictionary = new Tokenizer(cedict.loadSimplified(path))
+    let dictionary = type === 'traditional'
+        ? cedict.loadTraditional(path) 
+        : cedict.loadSimplified(path)
 
     return function tokenize(text) {
         let result = []
@@ -17,13 +18,13 @@ function load(path, type) {
                 simplified: matches[0] ? matches[0].simplified : text,
 
                 matches: matches.map(match => {
-                    let rawPinyin = match.pinyin.trim().toLowerCase()
+                    let pinyin = match.pinyin.trim().toLowerCase()
 
-                    return Object.assign(match, {
-                        pinyin: rawPinyin,
-                        pinyinPretty: pinyin.prettify(rawPinyin.replace(/u:/g, 'ü')),
+                    return {
+                        pinyin,
+                        pinyinPretty: prettify(pinyin.replace(/u:/g, 'ü')),
                         english: match.english
-                    })
+                    }
                 })
             })
         }
