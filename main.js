@@ -1,54 +1,45 @@
 const cedict = require('cedict-lookup')
-const pinyin = require('prettify-pinyin')
 const dedupe = require('dedupe')
+const pinyin = require('prettify-pinyin')
 
-class Tokenizer {
-    constructor(dictionary, options) {
-        this.dictionary = dictionary
-        this.options = options
-    }
+function load(path, type) {
+    let dictionary = new Tokenizer(cedict.loadSimplified(path))
 
-    tokenize(text) {
-        let {type} = this.options
+    return function tokenize(text) {
         let result = []
         let i = 0
 
         let pushEntry = text => {
-            let matches = this.dictionary.getMatch(text)
+            let matches = dictionary.getMatch(text)
 
-            if (!matches.length) {
-                result.push({
-                    traditional: text,
-                    simplified: text,
-                    pinyin: null,
-                    pinyinPretty: null,
-                    english: null
-                })
-            } else {
-                let rawPinyin = dedupe(matches.map(x => x.pinyin.trim().toLowerCase()))
+            result.push({
+                traditional: matches[0] ? matches[0].traditional : text,
+                simplified: matches[0] ? matches[0].simplified : text,
 
-                result.push({
-                    traditional: matches[0].traditional,
-                    simplified: matches[0].simplified,
-                    pinyin: rawPinyin.join('/'),
-                    pinyinPretty: rawPinyin.map(x => pinyin.prettify(x.replace(/u:/g, 'ü'))).join('/'),
-                    english: dedupe(matches.map(x => x.english)).join('\n')
+                matches: matches.map(match => {
+                    let rawPinyin = match.pinyin.trim().toLowerCase()
+
+                    return Object.assign(match, {
+                        pinyin: rawPinyin,
+                        pinyinPretty: pinyin.prettify(rawPinyin.replace(/u:/g, 'ü')),
+                        english: match.english
+                    })
                 })
-            }
+            })
         }
 
         while (i < text.length) {
             // First match two or more characters
 
-            if (i != text.length - 1) {
+            if (i !== text.length - 1) {
                 let getTwo = text.slice(i, i + 2)
-                let entries = this.dictionary.getEntriesStartingWith(getTwo)
+                let entries = dictionary.getEntriesStartingWith(getTwo)
                 let entry
 
                 entries.sort((x, y) => y[type].length - x[type].length)
 
                 for (let j = 0; j < entries.length; j++) {
-                    if (text.slice(i, i + entries[j][type].length) != entries[j][type])
+                    if (text.slice(i, i + entries[j][type].length) !== entries[j][type])
                         continue
 
                     entry = entries[j]
@@ -74,14 +65,10 @@ class Tokenizer {
     }
 }
 
-module.exports = function(path, type = 'simplified') {
-    let dictionary, options = {path, type}
+exports.loadSimplified = function(path) {
+    return load(path, 'simplified')
+}
 
-    if (type == 'simplified') {
-        dictionary = cedict.loadSimplified(path)
-    } else {
-        dictionary = cedict.loadTraditional(path)
-    }
-
-    return new Tokenizer(dictionary, options)
+exports.loadTraditional = function(path) {
+    return load(path, 'traditional')
 }
