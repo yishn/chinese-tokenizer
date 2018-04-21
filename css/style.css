@@ -206,7 +206,10 @@ body, textarea {
         cursor: pointer;
         transition: background .1s;
     }
-    #text-output:not(.stop-hover) .word:hover, #text-output .word.highlight {
+    #text-output .word:hover {
+        background: #FFFF80;
+    }
+    #text-output .word.highlight {
         background: #FFFF08;
 }
 
@@ -224,7 +227,7 @@ body, textarea {
         transform: translateX(-50%);
         pointer-events: none;
     }
-    #text-output:not(.stop-hover) .word:hover::before, #text-output .word.highlight::before {
+    #text-output .word.highlight::before {
         opacity: 1;
 }
 
