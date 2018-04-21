@@ -1,13 +1,13 @@
 export const initState = {
     loading: 0,
+    cedictData: null,
     input: '',
     type: 'simplified',
     highlight: null
 }
 
 export function commitDictionary(state, data) {
-    window.cedictData = data.replace(/\r/g, '').replace(/\n/g, '\r\n')
-    return {loading: Infinity}
+    return {loading: Infinity, cedictData: data}
 }
 
 export function updateProgress(state, value) {

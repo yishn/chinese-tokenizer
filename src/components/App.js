@@ -73,6 +73,7 @@ export default class App extends Component {
                             onChange={this.handleTypeChooserChange}
                         />
                         <TextOutput
+                            dictionary={this.state.cedictData}
                             value={this.state.input}
                             type={this.state.type}
                             highlight={this.state.highlight}

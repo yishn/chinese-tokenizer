@@ -1,19 +1,18 @@
 import {h, Component} from 'preact'
-import loadTokenizer from 'chinese-tokenizer'
+import tokenizer from 'chinese-tokenizer'
 
 import WordToken from './WordToken'
 
 let tokenEqual = (t1, t2) => t1 == null || t2 == null ? t1 == t2 : t1.traditional === t2.traditional
 
 export default class TextOutput extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
 
         // Load tokenizers
 
         this.cache = [null, null]
-        this.types = ['simplified', 'traditional']
-        this.tokenizers = this.types.map(t => loadTokenizer('../../data/cedict_ts.u8', t))
+        this.tokenize = tokenizer.load(props.dictionary)
     }
 
     shouldComponentUpdate(nextProps) {
@@ -27,13 +26,10 @@ export default class TextOutput extends Component {
     getTokens() {
         if (this.cache[0] === this.props.value) return this.cache[1]
 
-        let allTokens = this.tokenizers.map(t => t.tokenize(this.props.value))
-        let errorCount = allTokens.map(tokens => tokens.filter(x => x.pinyin == null).length)
-        let index = errorCount[1] < errorCount[0] ? 1 : 0
-        let result = allTokens[index]
+        let tokens = this.tokenize(this.props.value)
+        this.cache = [this.props.value, tokens]
 
-        this.cache = [this.props.value, result]
-        return result
+        return tokens
     }
 
     render() {
@@ -45,7 +41,7 @@ export default class TextOutput extends Component {
             onClick={this.props.onClick}
         >
             {tokens.map(token =>
-                token.pinyin != null ?
+                token.matches.length > 0 ?
                 <WordToken
                     {...token}
 
