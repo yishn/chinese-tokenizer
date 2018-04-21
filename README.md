@@ -1,6 +1,6 @@
 # chinese-tokenizer
 
-Tokenizes Chinese texts into words using [CC-CEDICT](https://cc-cedict.org/). You can try it out at [the demo page](https://yishn.github.io/chinese-tokenizer/). The code for the demo page can be found in the [`gh-pages` branch](https://github.com/yishn/chinese-tokenizer/tree/gh-pages) of this repository.
+Simple algorithm to tokenize Chinese texts into words using [CC-CEDICT](https://cc-cedict.org/). You can try it out at [the demo page](https://yishn.github.io/chinese-tokenizer/). The code for the demo page can be found in the [`gh-pages` branch](https://github.com/yishn/chinese-tokenizer/tree/gh-pages) of this repository.
 
 ## How this works
 
@@ -19,36 +19,53 @@ npm install chinese-tokenizer --save
 Make sure to provide the [CC-CEDICT](https://cc-cedict.org/) data.
 
 ~~~js
-const tokenizer = require('chinese-tokenizer')('./cedict.txt')
-console.log(tokenizer.tokenize('我是中国人。'))
-~~~
+const tokenize = require('chinese-tokenizer').loadFile('./cedict_ts.u8')
 
-~~~js
-const tokenizer = require('chinese-tokenizer')('./cedict.txt', 'traditional')
-console.log(tokenizer.tokenize('我是中國人。'))
+console.log(JSON.stringify(tokenize('我是中国人。'), null, '  '))
+console.log(JSON.stringify(tokenize('我是中國人。'), null, '  '))
 ~~~
 
 Output:
 
 ~~~
-[ { traditional: '我',
-    simplified: '我',
-    pinyin: 'wo3',
-    pinyinPretty: 'wǒ',
-    english: 'I/me/my' },
-  { traditional: '是',
-    simplified: '是',
-    pinyin: 'shi4',
-    pinyinPretty: 'shì',
-    english: 'is/are/am/yes/to be\nvariant of 是[shi4]/(used in given names)' },
-  { traditional: '中國人',
-    simplified: '中国人',
-    pinyin: 'zhong1 guo2 ren2',
-    pinyinPretty: 'zhōng guó rén',
-    english: 'Chinese person' },
-  { traditional: '。',
-    simplified: '。',
-    pinyin: null,
-    pinyinPretty: null,
-    english: null } ]
+[
+  {
+    "traditional": "我",
+    "simplified": "我",
+    "matches": [
+      {
+        "pinyin": "wo3",
+        "pinyinPretty": "wǒ",
+        "english": "I/me/my"
+      }
+    ]
+  },
+  {
+    "traditional": "是",
+    "simplified": "是",
+    "matches": [
+      {
+        "pinyin": "shi4",
+        "pinyinPretty": "shì",
+        "english": "is/are/am/yes/to be"
+      }
+    ]
+  },
+  {
+    "traditional": "中國人",
+    "simplified": "中国人",
+    "matches": [
+      {
+        "pinyin": "Zhong1 guo2 ren2",
+        "pinyinPretty": "Zhōng guó rén",
+        "english": "Chinese person"
+      }
+    ]
+  },
+  {
+    "traditional": "。",
+    "simplified": "。",
+    "matches": []
+  }
+]
 ~~~
