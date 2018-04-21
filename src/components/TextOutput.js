@@ -37,7 +37,6 @@ export default class TextOutput extends Component {
 
         return <section
             id="text-output"
-            class={this.props.highlight != null ? 'stop-hover' : ''}
             onClick={this.props.onClick}
         >
             {tokens.map(token =>

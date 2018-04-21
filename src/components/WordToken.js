@@ -19,6 +19,14 @@ export default class WordToken extends Component {
     render() {
         return <span
             class={['word', this.props.highlight ? 'highlight' : ''].join(' ').trim()}
+            data-pinyin={
+                this.props.matches
+                .map(x => x.pinyinPretty)
+                .sort()
+                .filter((x, i, a) => i === 0 || a[i - 1] !== x)
+                .join('/')
+            }
+
             onClick={this.handleClick}
         >
             {this.props[this.props.type]}
