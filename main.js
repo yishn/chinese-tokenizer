@@ -1,29 +1,30 @@
-const cedict = require('./cedict-lookup')
-const {prettify} = require('prettify-pinyin')
+const {readFileSync} = require('fs')
+const Cedict = require('./cedict')
 
-function load(path, type) {
-    let dictionary = type === 'traditional'
-        ? cedict.loadTraditional(path) 
-        : cedict.loadSimplified(path)
+exports.loadFile = function(path) {
+    return exports.load(readFileSync(path, 'utf-8'))
+}
+
+exports.load = function(contents) {
+    let dictionary = new Cedict()
+    dictionary.load(contents)
 
     return function tokenize(text) {
         let result = []
         let i = 0
 
-        let pushEntry = text => {
-            let matches = dictionary.getMatch(text)
+        let pushToken = text => {
+            let entries = dictionary.get(text)
 
             result.push({
-                traditional: matches[0] ? matches[0].traditional : text,
-                simplified: matches[0] ? matches[0].simplified : text,
+                traditional: entries[0] ? entries[0].traditional : text,
+                simplified: entries[0] ? entries[0].simplified : text,
 
-                matches: matches.map(match => {
-                    let pinyin = match.pinyin.trim()
-
+                matches: entries.map(({pinyin, pinyinPretty, english}) => {
                     return {
                         pinyin,
-                        pinyinPretty: prettify(pinyin.replace(/u:/g, 'ü')),
-                        english: match.english
+                        pinyinPretty,
+                        english
                     }
                 })
             })
@@ -33,23 +34,28 @@ function load(path, type) {
             // First match two or more characters
 
             if (i !== text.length - 1) {
-                let getTwo = text.slice(i, i + 2)
-                let entries = dictionary.getEntriesStartingWith(getTwo)
-                let entry
+                let getTwo = text.substr(i, 2)
+                let entries = dictionary.getPrefix(getTwo)
+                let found = false
+                let foundWord = null
 
-                entries.sort((x, y) => y[type].length - x[type].length)
+                entries.sort((x, y) => y.traditional.length - x.traditional.length)
 
-                for (let j = 0; j < entries.length; j++) {
-                    if (text.slice(i, i + entries[j][type].length) !== entries[j][type])
+                for (let entry of entries) {
+                    let word = text.substr(i, entry.traditional.length)
+
+                    if (![entry.traditional, entry.simplified].includes(word))
                         continue
 
-                    entry = entries[j]
-                    pushEntry(entry[type])
+                    pushToken(word)
+                    found = true
+                    foundWord = word
+
                     break
                 }
 
-                if (entry) {
-                    i += entry[type].length
+                if (found) {
+                    i += foundWord.length
                     continue
                 }
             }
@@ -57,19 +63,11 @@ function load(path, type) {
             // If all fails, match one character
 
             let character = text[i]
-            pushEntry(character)
+            pushToken(character)
 
             i++
         }
 
         return result
     }
-}
-
-exports.loadSimplified = function(path) {
-    return load(path, 'simplified')
-}
-
-exports.loadTraditional = function(path) {
-    return load(path, 'traditional')
 }
