@@ -2,7 +2,7 @@
   "name": "chinese-tokenizer",
   "version": "2.0.0",
   "description": "Simple algorithm to tokenize Chinese texts into words using CC-CEDICT.",
-  "main": "main.js",
+  "main": "./src/main.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yishn/chinese-tokenizer.git"
