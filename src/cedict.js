@@ -1,4 +1,5 @@
 const {prettify} = require('prettify-pinyin')
+const Trie = require('./trie')
 
 function parseLine(line) {
     let match = line.match(/^(\S+)\s(\S+)\s\[([^\]]+)\]\s\/(.+)\//)
@@ -10,62 +11,6 @@ function parseLine(line) {
     let pinyinPretty = prettify(pinyin)
 
     return {traditional, simplified, pinyin, pinyinPretty, english}
-}
-
-class Trie {
-    constructor() {
-        this.content = {}
-    }
-
-    getKeyObject(key, create = false) {
-        key = key.toString()
-
-        let chars = key === '' ? [key] : key.split('')
-        let obj = this.content
-
-        for (let char of chars) {
-            if (obj[char] == null) {
-                if (create) obj[char] = {}
-                else return {}
-            }
-
-            obj = obj[char]
-        }
-
-        return obj
-    }
-
-    get(key) {
-        let obj = this.getKeyObject(key)
-
-        return obj.values || []
-    }
-
-    getPrefix(key) {
-        let _getPrefix = (key, obj = null) => {
-            if (obj == null) obj = this.getKeyObject(key)
-            let result = obj.values ? [...obj.values] : []
-
-            for (let char in obj) {
-                if (char === 'values' || obj[char] == null) continue
-
-                result.push(..._getPrefix(key + char, obj[char]))
-            }
-
-            return result
-        }
-
-        return _getPrefix(key)
-    }
-
-    push(key, value) {
-        let obj = this.getKeyObject(key, true)
-
-        if (obj.values == null) obj.values = []
-        if (!obj.values.includes(value)) obj.values.push(value)
-
-        return this
-    }
 }
 
 class Cedict {
