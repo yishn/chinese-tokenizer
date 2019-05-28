@@ -1,6 +1,12 @@
 const {readFileSync} = require('fs')
 const Cedict = require('./cedict')
 
+const chinesePunctuation = [
+    '·', '×', '—', '‘', '’', '“', '”', '…',
+    '、', '。', '《', '》', '『', '』', '【', '】',
+    '！', '（', '）', '，', '：', '；', '？'
+]
+
 exports.loadFile = function(path) {
     return exports.load(readFileSync(path, 'utf-8'))
 }
@@ -9,16 +15,24 @@ exports.load = function(contents) {
     let dictionary = new Cedict()
     dictionary.load(contents)
 
+    function isChinese(character) {
+        return chinesePunctuation.includes(character)
+            || dictionary.get(character).length > 0
+    }
+
     return function tokenize(text) {
+        text = Array.from(text)
+
         let result = []
         let i = 0
 
-        let pushToken = text => {
-            let entries = dictionary.get(text)
+        let pushChineseToken = word => {
+            let entries = dictionary.get(word)
 
             result.push({
-                traditional: entries[0] ? entries[0].traditional : text,
-                simplified: entries[0] ? entries[0].simplified : text,
+                text: word,
+                traditional: entries[0] ? entries[0].traditional : word,
+                simplified: entries[0] ? entries[0].simplified : word,
 
                 matches: entries.map(({pinyin, pinyinPretty, english}) => {
                     return {
@@ -30,11 +44,20 @@ exports.load = function(contents) {
             })
         }
 
+        let pushForeignToken = word => {
+            result.push({
+                text: word,
+                traditional: null,
+                simplified: null,
+                matches: []
+            })
+        }
+
         while (i < text.length) {
-            // First match two or more characters
+            // Try to match two or more characters
 
             if (i !== text.length - 1) {
-                let getTwo = text.substr(i, 2)
+                let getTwo = text.slice(i, i + 2).join('')
                 let entries = dictionary.getPrefix(getTwo)
                 let found = false
                 let foundWord = null
@@ -42,12 +65,12 @@ exports.load = function(contents) {
                 entries.sort((x, y) => y.traditional.length - x.traditional.length)
 
                 for (let entry of entries) {
-                    let word = text.substr(i, entry.traditional.length)
+                    let word = text.slice(i, i + entry.traditional.length).join('')
 
                     if (![entry.traditional, entry.simplified].includes(word))
                         continue
 
-                    pushToken(word)
+                    pushChineseToken(word)
                     found = true
                     foundWord = word
 
@@ -60,12 +83,35 @@ exports.load = function(contents) {
                 }
             }
 
-            // If all fails, match one character
+            // If it fails, match one character
 
             let character = text[i]
-            pushToken(character)
 
-            i++
+            if (isChinese(character)) {
+                pushChineseToken(character)
+                i++
+                continue
+            }
+
+            // Ignore whitespace
+
+            if (character.match(/\s/) != null) {
+                i++
+                continue
+            }
+
+            // Handle non-Chinese characters
+
+            let end = i + 1
+
+            for (; end < text.length; end++) {
+                if (text[end].match(/\s/) != null || isChinese(text[end])) break
+            }
+
+            let word = text.slice(i, end).join('')
+            pushForeignToken(word)
+
+            i = end
         }
 
         return result
