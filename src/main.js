@@ -34,13 +34,11 @@ exports.load = function(contents) {
                 traditional: entries[0] ? entries[0].traditional : word,
                 simplified: entries[0] ? entries[0].simplified : word,
 
-                matches: entries.map(({pinyin, pinyinPretty, english}) => {
-                    return {
-                        pinyin,
-                        pinyinPretty,
-                        english
-                    }
-                })
+                matches: entries.map(({pinyin, pinyinPretty, english}) => ({
+                    pinyin,
+                    pinyinPretty,
+                    english
+                }))
             })
         }
 
