@@ -45,8 +45,8 @@ exports.load = function(contents) {
         let pushForeignToken = word => {
             result.push({
                 text: word,
-                traditional: null,
-                simplified: null,
+                traditional: word,
+                simplified: word,
                 matches: []
             })
         }
@@ -94,6 +94,7 @@ exports.load = function(contents) {
             // Ignore whitespace
 
             if (character.match(/\s/) != null) {
+                pushForeignToken(character)
                 i++
                 continue
             }

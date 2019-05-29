@@ -30,6 +30,7 @@ Output:
 ~~~
 [
   {
+    "text": "我",
     "traditional": "我",
     "simplified": "我",
     "matches": [
@@ -41,6 +42,7 @@ Output:
     ]
   },
   {
+    "text": "是",
     "traditional": "是",
     "simplified": "是",
     "matches": [
@@ -52,6 +54,7 @@ Output:
     ]
   },
   {
+    "text": "中國人",
     "traditional": "中國人",
     "simplified": "中国人",
     "matches": [
@@ -63,6 +66,7 @@ Output:
     ]
   },
   {
+    "text": "。",
     "traditional": "。",
     "simplified": "。",
     "matches": []
