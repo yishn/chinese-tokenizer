@@ -35,8 +35,8 @@ export default class TextOutput extends Component {
             onClick={this.props.onClick}
         >
             {tokens.map(token =>
-                token.matches.length > 0 ?
-                <WordToken
+                token.matches.length > 0
+                ? <WordToken
                     {...token}
 
                     highlight={tokenEqual(token, this.props.highlight)}

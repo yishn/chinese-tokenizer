@@ -85,7 +85,9 @@ export default class App extends Component {
                             tokenize={this.state.tokenize}
                             data={this.state.highlight}
                             type={this.state.type}
+
                             onCloseClick={this.handleClearHighlight}
+                            onTokenClick={this.handleTokenClick}
                         />
                     </div>
                 </main>
