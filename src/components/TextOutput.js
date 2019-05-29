@@ -1,18 +1,13 @@
 import {h, Component} from 'preact'
-import tokenizer from 'chinese-tokenizer'
-
 import WordToken from './WordToken'
 
-let tokenEqual = (t1, t2) => t1 == null || t2 == null ? t1 == t2 : t1.traditional === t2.traditional
+let tokenEqual = (t1, t2) => t1 == null || t2 == null ? t1 == t2 : t1.text === t2.text
 
 export default class TextOutput extends Component {
     constructor(props) {
         super(props)
 
-        // Load tokenizers
-
         this.cache = [null, null]
-        this.tokenize = tokenizer.load(props.dictionary)
     }
 
     shouldComponentUpdate(nextProps) {
@@ -26,7 +21,7 @@ export default class TextOutput extends Component {
     getTokens() {
         if (this.cache[0] === this.props.value) return this.cache[1]
 
-        let tokens = this.tokenize(this.props.value)
+        let tokens = this.props.tokenize(this.props.value)
         this.cache = [this.props.value, tokens]
 
         return tokens
@@ -49,8 +44,8 @@ export default class TextOutput extends Component {
 
                     onClick={this.props.onTokenClick}
                 />
-                : token[this.props.type] === '\n' ? <br/>
-                : token[this.props.type]
+                : token.text === '\n' ? <br/>
+                : token.text
             )}
         </section>
     }

@@ -1,13 +1,20 @@
+import tokenizer from 'chinese-tokenizer'
+
 export const initState = {
     loading: 0,
     cedictData: null,
+    tokenize: null,
     input: '',
     type: 'simplified',
     highlight: null
 }
 
 export function commitDictionary(state, data) {
-    return {loading: Infinity, cedictData: data}
+    return {
+        loading: Infinity,
+        cedictData: data,
+        tokenize: tokenizer.load(data)
+    }
 }
 
 export function updateProgress(state, value) {

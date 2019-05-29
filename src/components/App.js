@@ -73,7 +73,7 @@ export default class App extends Component {
                             onChange={this.handleTypeChooserChange}
                         />
                         <TextOutput
-                            dictionary={this.state.cedictData}
+                            tokenize={this.state.tokenize}
                             value={this.state.input}
                             type={this.state.type}
                             highlight={this.state.highlight}
@@ -82,6 +82,7 @@ export default class App extends Component {
                             onTokenClick={this.handleTokenClick}
                         />
                         <Dictionary
+                            tokenize={this.state.tokenize}
                             data={this.state.highlight}
                             type={this.state.type}
                             onCloseClick={this.handleClearHighlight}

@@ -11,9 +11,9 @@ export default class WordToken extends Component {
     handleClick = evt => {
         evt.stopPropagation()
 
-        let {traditional, simplified, matches, type, onClick = () => {}} = this.props
+        let {text, traditional, simplified, matches, type, onClick = () => {}} = this.props
 
-        onClick({traditional, simplified, matches, type})
+        onClick({text, traditional, simplified, matches, type})
     }
 
     render() {
