@@ -1,4 +1,4 @@
-# chinese-tokenizer
+# chinese-tokenizer [![Build Status](https://travis-ci.org/yishn/chinese-tokenizer.svg?branch=master)](https://travis-ci.org/yishn/chinese-tokenizer)
 
 Simple algorithm to tokenize Chinese texts into words using [CC-CEDICT](https://cc-cedict.org/). You can try it out at [the demo page](https://yishn.github.io/chinese-tokenizer/). The code for the demo page can be found in the [`gh-pages` branch](https://github.com/yishn/chinese-tokenizer/tree/gh-pages) of this repository.
 
