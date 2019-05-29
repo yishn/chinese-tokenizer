@@ -20,7 +20,13 @@
     "url": "https://github.com/yishn/chinese-tokenizer/issues"
   },
   "homepage": "https://github.com/yishn/chinese-tokenizer",
+  "scripts": {
+    "test": "tap tests/*.test.js"
+  },
   "dependencies": {
     "prettify-pinyin": "^0.1.5"
+  },
+  "devDependencies": {
+    "tap": "^14.2.0"
   }
 }

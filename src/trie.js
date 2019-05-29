@@ -6,7 +6,7 @@ class Trie {
     getKeyObject(key, create = false) {
         key = key.toString()
 
-        let chars = key === '' ? [key] : key.split('')
+        let chars = key === '' ? [key] : Array.from(key)
         let obj = this.content
 
         for (let char of chars) {
