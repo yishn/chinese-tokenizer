@@ -34,23 +34,18 @@ export function updateType(state, value) {
 }
 
 export function updateHighlight(state, token) {
-    if (token == null) {
-        return {
-            highlightIndex: state.highlightHistory.length
-        }
-    } else if (
-        state.highlightHistory[state.highlightIndex] != null
+    if (
+        token != null
+        && state.highlightHistory[state.highlightIndex] != null
         && token.traditional === state.highlightHistory[state.highlightIndex].traditional
-    ) {
-        return {}
-    }
+    ) return {}
 
     let newHistory = state.highlightHistory.slice(0, state.highlightIndex + 1)
-    newHistory.push(token)
+    if (token != null) newHistory.push(token)
 
     return {
         highlightHistory: newHistory,
-        highlightIndex: newHistory.length - 1
+        highlightIndex: token != null ? newHistory.length - 1 : newHistory.length
     }
 }
 

@@ -17,6 +17,20 @@ export default class Dictionary extends Component {
         onCloseClick()
     }
 
+    handleBackButtonClick = evt => {
+        evt.preventDefault()
+
+        let {onBackButtonClick = () => {}} = this.props
+        onBackButtonClick()
+    }
+
+    handleForwardButtonClick = evt => {
+        evt.preventDefault()
+
+        let {onForwardButtonClick = () => {}} = this.props
+        onForwardButtonClick()
+    }
+
     createTokenHandler(token) {
         return evt => {
             evt.preventDefault()
@@ -29,26 +43,48 @@ export default class Dictionary extends Component {
     render() {
         if (this.props.data == null) return
 
+        let {tokenize, enableBackButton, enableForwardButton} = this.props
+
         return <section id="dictionary" class="show">
             <h1>{this.props.data[this.props.type]}</h1>
 
-            <ul>
-                {this.props.data.matches.map(entry => {
-                    let description = smartypants(entry.english.replace(/\//g, ', '))
-
-                    return <li>
+            <ul class="descriptions">
+                {this.props.data.matches.map(entry =>
+                    <li>
                         <span class="pinyin">{entry.pinyinPretty}</span>{' '}
 
-                        {this.props.tokenize(description).map(token =>
+                        {tokenize(smartypants(entry.english.replace(/\//g, ', '))).map(token =>
                             token.matches.length > 0 && token.text.match(/^[a-z]$/i) == null
                             ? <a href="#" onClick={this.createTokenHandler(token)}>{token.text}</a>
                             : token.text
                         )}
                     </li>
-                })}
+                )}
             </ul>
 
-            <a class="close" href="#" onClick={this.handleCloseClick}>Close</a>
+            <ul class="actions">
+                <li>
+                    <a
+                        class={enableBackButton ? '' : 'disabled'}
+                        href="#"
+                        onClick={this.handleBackButtonClick}
+                    >
+                        Back
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class={enableForwardButton ? '' : 'disabled'}
+                        href="#"
+                        onClick={this.handleForwardButtonClick}
+                    >
+                        Forward
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onClick={this.handleCloseClick}>Close</a>
+                </li>
+            </ul>
         </section>
     }
 }

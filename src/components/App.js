@@ -48,6 +48,14 @@ export default class App extends Component {
         this.setState(state => appState.updateHighlight(state, evt))
     }
 
+    handleGoBackHighlight = evt => {
+        this.setState(state => appState.goBackHighlight(state))
+    }
+
+    handleGoForwardHighlight = evt => {
+        this.setState(state => appState.goForwardHighlight(state))
+    }
+
     handleClearHighlight = evt => {
         this.setState(state => appState.clearHighlight(state))
     }
@@ -83,11 +91,15 @@ export default class App extends Component {
                         />
                         <Dictionary
                             tokenize={this.state.tokenize}
+                            enableBackButton={this.state.highlightIndex > 0}
+                            enableForwardButton={this.state.highlightIndex < this.state.highlightHistory.length - 1}
                             data={this.state.highlightHistory[this.state.highlightIndex]}
                             type={this.state.type}
 
-                            onCloseClick={this.handleClearHighlight}
                             onTokenClick={this.handleTokenClick}
+                            onBackButtonClick={this.handleGoBackHighlight}
+                            onForwardButtonClick={this.handleGoForwardHighlight}
+                            onCloseClick={this.handleClearHighlight}
                         />
                     </div>
                 </main>

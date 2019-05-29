@@ -249,7 +249,7 @@ body, textarea {
     font-size: 2em;
 }
 
-#dictionary .pinyin, #dictionary .close {
+#dictionary .pinyin, #dictionary .actions a {
     font-size: .8em;
     color: #555;
 }
@@ -258,13 +258,22 @@ body, textarea {
     margin-right: 1em;
 }
 
-#dictionary ul {
+#dictionary .descriptions {
     margin-left: 1.5em;
     list-style: square;
 }
 
-#dictionary ul a {
+#dictionary .descriptions a {
     color: #555;
     text-decoration: none;
     border-bottom: 1px solid #555;
+}
+
+#dictionary .actions {
+    list-style: none;
+}
+
+#dictionary .actions .disabled {
+    cursor: default;
+    opacity: .5;
 }
