@@ -38,9 +38,14 @@ export function updateHighlight(state, token) {
         return {
             highlightIndex: state.highlightHistory.length
         }
+    } else if (
+        state.highlightHistory[state.highlightIndex] != null
+        && token.traditional === state.highlightHistory[state.highlightIndex].traditional
+    ) {
+        return {}
     }
 
-    let newHistory = highlightHistory.slice(0, state.highlightIndex + 1)
+    let newHistory = state.highlightHistory.slice(0, state.highlightIndex + 1)
     newHistory.push(token)
 
     return {
@@ -49,13 +54,13 @@ export function updateHighlight(state, token) {
     }
 }
 
-export function goToPreviousHighlight(state) {
+export function goBackHighlight(state) {
     return {
         highlightIndex: Math.max(state.highlightIndex - 1, 0)
     }
 }
 
-export function goToNextHighlight(state) {
+export function goForwardHighlight(state) {
     return {
         highlightIndex: Math.min(state.highlightIndex + 1, state.highlightHistory.length - 1)
     }
