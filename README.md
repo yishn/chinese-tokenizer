@@ -69,3 +69,13 @@ Output:
   }
 ]
 ~~~
+
+## API
+
+### `loadFile(path)`
+
+Reads the [CC-CEDICT](https://cc-cedict.org/) file from given `path` and returns a tokenize function based on the dictionary.
+
+### `load(content)`
+
+Parses [CC-CEDICT](https://cc-cedict.org/) string content from `content` and returns a tokenize function based on the dictionary.
