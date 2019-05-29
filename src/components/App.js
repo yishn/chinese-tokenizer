@@ -76,14 +76,14 @@ export default class App extends Component {
                             tokenize={this.state.tokenize}
                             value={this.state.input}
                             type={this.state.type}
-                            highlight={this.state.highlight}
+                            highlight={this.state.highlightHistory[this.state.highlightIndex]}
 
                             onClick={this.handleClearHighlight}
                             onTokenClick={this.handleTokenClick}
                         />
                         <Dictionary
                             tokenize={this.state.tokenize}
-                            data={this.state.highlight}
+                            data={this.state.highlightHistory[this.state.highlightIndex]}
                             type={this.state.type}
 
                             onCloseClick={this.handleClearHighlight}

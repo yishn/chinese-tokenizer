@@ -6,7 +6,8 @@ export const initState = {
     tokenize: null,
     input: '',
     type: 'simplified',
-    highlight: null
+    highlightHistory: [],
+    highlightIndex: 0
 }
 
 export function commitDictionary(state, data) {
@@ -33,7 +34,31 @@ export function updateType(state, value) {
 }
 
 export function updateHighlight(state, token) {
-    return {highlight: token}
+    if (token == null) {
+        return {
+            highlightIndex: state.highlightHistory.length
+        }
+    }
+
+    let newHistory = highlightHistory.slice(0, state.highlightIndex + 1)
+    newHistory.push(token)
+
+    return {
+        highlightHistory: newHistory,
+        highlightIndex: newHistory.length - 1
+    }
+}
+
+export function goToPreviousHighlight(state) {
+    return {
+        highlightIndex: Math.max(state.highlightIndex - 1, 0)
+    }
+}
+
+export function goToNextHighlight(state) {
+    return {
+        highlightIndex: Math.min(state.highlightIndex + 1, state.highlightHistory.length - 1)
+    }
 }
 
 export function clearHighlight(state) {
