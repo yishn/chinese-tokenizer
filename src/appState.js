@@ -1,5 +1,7 @@
 import tokenizer from 'chinese-tokenizer'
 
+const highlightHistoryMaxLength = 100
+
 export const initState = {
     loading: 0,
     cedictData: null,
@@ -41,7 +43,11 @@ export function updateHighlight(state, token) {
     ) return {}
 
     let newHistory = state.highlightHistory.slice(0, state.highlightIndex + 1)
-    if (token != null) newHistory.push(token)
+
+    if (token != null) {
+        if (newHistory.length >= highlightHistoryMaxLength) newHistory.shift()
+        newHistory.push(token)
+    }
 
     return {
         highlightHistory: newHistory,
