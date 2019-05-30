@@ -17,7 +17,7 @@ export default class WordToken extends Component {
     }
 
     render() {
-        return <span
+        let word = <span
             class={['word', this.props.highlight ? 'highlight' : ''].join(' ').trim()}
             data-pinyin={
                 this.props.matches
@@ -31,5 +31,13 @@ export default class WordToken extends Component {
         >
             {this.props[this.props.type]}
         </span>
+
+        return this.props.prefix === '' && this.props.suffix === ''
+            ? word
+            : <span class="word-wrapper">
+                {this.props.prefix}
+                {word}
+                {this.props.suffix}
+            </span>
     }
 }

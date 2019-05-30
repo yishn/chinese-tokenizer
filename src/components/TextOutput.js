@@ -1,6 +1,9 @@
 import {h, Component} from 'preact'
 import WordToken from './WordToken'
 
+const prefixPunctuation = ['‘', '“', '《', '『', '【', '（']
+const suffixPunctuation = ['’', '”', '》', '』', '】', '）', '、', '，', '…', '。', '：', '；', '！', '？']
+
 let tokenEqual = (t1, t2) => t1 == null || t2 == null ? t1 == t2 : t1.text === t2.text
 
 export default class TextOutput extends Component {
@@ -34,19 +37,45 @@ export default class TextOutput extends Component {
             id="text-output"
             onClick={this.props.onClick}
         >
-            {tokens.map(token =>
-                token.matches.length > 0
-                ? <WordToken
-                    {...token}
+            {tokens.map((token, i) => {
+                if (
+                    prefixPunctuation.includes(token.text)
+                    || suffixPunctuation.includes(token.text)
+                ) return
 
-                    highlight={tokenEqual(token, this.props.highlight)}
-                    type={this.props.type}
+                let prefix = ''
+                let suffix = ''
 
-                    onClick={this.props.onTokenClick}
-                />
-                : token.text === '\n' ? <br/>
-                : token.text
-            )}
+                for (let j = 1; i + j < tokens.length; j++) {
+                    if (suffixPunctuation.includes(tokens[i + j].text)) {
+                        suffix += tokens[i + j].text
+                    } else {
+                        break
+                    }
+                }
+
+                for (let j = 1; i - j >= 0; j++) {
+                    if (prefixPunctuation.includes(tokens[i - j].text)) {
+                        prefix = tokens[i - j].text + prefix
+                    } else {
+                        break
+                    }
+                }
+
+                return token.matches.length > 0
+                    ? <WordToken
+                        {...token}
+
+                        highlight={tokenEqual(token, this.props.highlight)}
+                        type={this.props.type}
+                        prefix={prefix}
+                        suffix={suffix}
+
+                        onClick={this.props.onTokenClick}
+                    />
+                    : token.text === '\n' ? <br/>
+                    : token.text
+            })}
         </section>
     }
 }

@@ -199,7 +199,10 @@ body, textarea {
 
 /* WordToken */
 
-#text-output .word {
+#text-output .word-wrapper {
+        display: inline-block;
+    }
+    #text-output .word {
         display: inline-block;
         position: relative;
         margin: .5em 0;
