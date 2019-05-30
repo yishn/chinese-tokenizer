@@ -11,42 +11,6 @@ body, textarea {
     color: #333;
 }
 
-/* Layout */
-
-@media only screen and (min-width: 500px) {
-    #root, main {
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-    }
-
-    main {
-        display: grid;
-        grid-template-columns: minmax(250px, 33%) 1fr;
-    }
-
-    #input {
-        display: grid;
-        border-right: 1px solid #ccc;
-        grid-template-rows: auto 1fr;
-        overflow: hidden;
-    }
-
-    #output {
-        display: grid;
-        grid-template-rows: auto 1fr auto;
-        overflow: hidden;
-    }
-}
-
-@media only screen and (max-width: 500px) {
-    #text-input {
-        height: 300px;
-    }
-}
-
 /* LoadScreen */
 
 #load-screen {
@@ -136,9 +100,10 @@ body, textarea {
 /* TextInput */
 
 #text-input {
+    position: relative;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
-    position: relative;
+    height: 150px;
 }
 
 #text-input textarea {
@@ -191,6 +156,7 @@ body, textarea {
 
 #text-output {
     padding: 1em;
+    max-height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     font-size: 1.3em;
@@ -279,4 +245,43 @@ body, textarea {
 #dictionary .actions .disabled {
     cursor: default;
     opacity: .5;
+}
+
+/* Layout */
+
+#output {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+@media only screen and (min-width: 500px) {
+    #root, main {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    main {
+        display: grid;
+        grid-template-columns: minmax(250px, 33%) 1fr;
+    }
+
+    #input {
+        display: grid;
+        border-right: 1px solid #ccc;
+        grid-template-rows: auto 1fr;
+        overflow: hidden;
+    }
+
+    #text-input {
+        height: auto;
+    }
+
+    #output {
+        max-height: auto;
+    }
 }

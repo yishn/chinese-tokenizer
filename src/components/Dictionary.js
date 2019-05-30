@@ -7,7 +7,8 @@ export default class Dictionary extends Component {
     shouldComponentUpdate(nextProps) {
         return !tokenEqual(nextProps.data, this.props.data)
             || nextProps.type !== this.props.type
-            || nextProps.onCloseClick !== this.props.onCloseClick
+            || nextProps.enableBackButton !== this.props.enableBackButton
+            || nextProps.enableForwardButton !== this.props.enableForwardButton
     }
 
     handleCloseClick = evt => {
