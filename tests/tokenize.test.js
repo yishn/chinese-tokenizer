@@ -26,6 +26,14 @@ t.test('should tokenize text that includes both simplified and traditional Chine
     t.strictDeepEqual(tokenTexts, ['中国人', '中國人', '。'])
 })
 
+t.test('should detect simplified 么 correctly', async t => {
+    let tokens = tokenize('你吃饭了么？')
+    let tokenTexts = tokens.map(token => token.simplified)
+
+    t.assert(tokens.slice(0, -1).every(token => token.matches.length > 0))
+    t.strictDeepEqual(tokenTexts, ['你', '吃饭', '了', '么', '？'])
+})
+
 t.test('should tokenize non-Chinese text', async t => {
     let tokens = tokenize('我的名字是 Daniel Müller。')
     let tokenTexts = tokens.map(token => token.text)

@@ -19,10 +19,24 @@ exports.load = function(contents) {
         text = Array.from(text)
 
         let result = []
+        let preference = {simplified: 0, traditional: 0}
         let i = 0
 
         let pushToken = word => {
-            let entries = dictionary.get(word)
+            let simplifiedEntries = dictionary.get(word, false)
+            let traditionalEntries = dictionary.get(word, true)
+
+            let entries = simplifiedEntries.length === 0 ? traditionalEntries
+                : traditionalEntries.length === 0 ? simplifiedEntries
+                : preference.simplified < preference.traditional ? traditionalEntries
+                : preference.simplified > preference.traditional ? simplifiedEntries
+                : [...simplifiedEntries, ...traditionalEntries]
+
+            if (entries === simplifiedEntries) {
+                preference.simplified++
+            } else if (entries === traditionalEntries) {
+                preference.traditional++
+            }
 
             result.push({
                 text: word,
@@ -41,29 +55,40 @@ exports.load = function(contents) {
             // Try to match two or more characters
 
             if (i !== text.length - 1) {
-                let tokenSort = (x, y) => Array.from(y.traditional).length - Array.from(x.traditional).length
-
                 let getTwo = text.slice(i, i + 2).join('')
                 let simplifiedEntries = dictionary.getPrefix(getTwo, false)
                 let traditionalEntries = dictionary.getPrefix(getTwo, true)
-                let found = false
                 let foundWord = null
+                let foundEntries = null
 
-                for (let entry of [...traditionalEntries, ...simplifiedEntries].sort(tokenSort)) {
-                    let word = text.slice(i, i + Array.from(entry.traditional).length).join('')
+                for (let entries of [traditionalEntries, simplifiedEntries]) {
+                    for (let entry of entries) {
+                        let matchText = entries === traditionalEntries ? entry.traditional : entry.simplified
+                        let word = text.slice(i, i + Array.from(matchText).length).join('')
 
-                    if (![entry.traditional, entry.simplified].includes(word))
-                        continue
-
-                    pushToken(word)
-                    found = true
-                    foundWord = word
-
-                    break
+                        if (
+                            matchText === word
+                            && (
+                                foundWord == null
+                                || Array.from(word).length > Array.from(foundWord).length
+                            )
+                        ) {
+                            foundWord = word
+                            foundEntries = entries
+                        }
+                    }
                 }
 
-                if (found) {
+                if (foundWord != null) {
+                    pushToken(foundWord)
                     i += Array.from(foundWord).length
+
+                    if (foundEntries === simplifiedEntries) {
+                        preference.simplified++
+                    } else if (foundEntries === traditionalEntries) {
+                        preference.traditional++
+                    }
+
                     continue
                 }
             }
@@ -73,7 +98,8 @@ exports.load = function(contents) {
             let character = text[i]
             let isChinese = character =>
                 chinesePunctuation.includes(character)
-                || dictionary.get(character).length > 0
+                || dictionary.get(character, false).length > 0
+                || dictionary.get(character, true).length > 0
 
             if (isChinese(character) || character.match(/\s/) != null) {
                 pushToken(character)

@@ -31,9 +31,8 @@ class Cedict {
         }
     }
 
-    get(word) {
-        let result = this.traditionalTrie.get(word)
-        return result.length > 0 ? result : this.simplifiedTrie.get(word)
+    get(word, traditional = false) {
+        return traditional ? this.traditionalTrie.get(word) : this.simplifiedTrie.get(word)
     }
 
     getPrefix(word, traditional = false) {
