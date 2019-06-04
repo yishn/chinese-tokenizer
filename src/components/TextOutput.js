@@ -21,61 +21,80 @@ export default class TextOutput extends Component {
             || nextProps.onTokenClick !== this.props.onTokenClick
     }
 
-    getTokens() {
+    getProcessedTokens() {
         if (this.cache[0] === this.props.value) return this.cache[1]
 
+        let processedIndices = []
         let tokens = this.props.tokenize(this.props.value)
-        this.cache = [this.props.value, tokens]
+        let processedTokens = tokens.map((token, i) => {
+            if (
+                prefixPunctuation.includes(token.text)
+                || suffixPunctuation.includes(token.text)
+            ) return
 
-        return tokens
+            let prefix = ''
+            let suffix = ''
+
+            for (let j = 1; i + j < tokens.length; j++) {
+                if (suffixPunctuation.includes(tokens[i + j].text)) {
+                    suffix += tokens[i + j].text
+                    processedIndices.push(i + j)
+                } else {
+                    break
+                }
+            }
+
+            for (let j = 1; i - j >= 0; j++) {
+                if (prefixPunctuation.includes(tokens[i - j].text)) {
+                    prefix = tokens[i - j].text + prefix
+                    processedIndices.push(i - j)
+                } else {
+                    break
+                }
+            }
+
+            processedIndices.push(i)
+            return {token, prefix, suffix}
+        }).map((x, i) => {
+            if (x == null && !processedIndices.includes(i)) {
+                return {
+                    token: tokens[i],
+                    prefix: '',
+                    suffix: ''
+                }
+            }
+
+            return x
+        }).filter(x => !!x)
+
+        this.cache = [this.props.value, processedTokens]
+
+        return processedTokens
     }
 
     render() {
-        let tokens = this.getTokens()
+        let tokens = this.getProcessedTokens()
 
         return <section
             id="text-output"
             onClick={this.props.onClick}
         >
-            {tokens.map((token, i) => {
-                if (
-                    prefixPunctuation.includes(token.text)
-                    || suffixPunctuation.includes(token.text)
-                ) return
+            {tokens.map(({token, prefix, suffix}) =>
+                token.matches.length > 0
+                ? <WordToken
+                    {...token}
 
-                let prefix = ''
-                let suffix = ''
+                    highlight={tokenEqual(token, this.props.highlight)}
+                    type={this.props.type}
+                    prefix={prefix}
+                    suffix={suffix}
 
-                for (let j = 1; i + j < tokens.length; j++) {
-                    if (suffixPunctuation.includes(tokens[i + j].text)) {
-                        suffix += tokens[i + j].text
-                    } else {
-                        break
-                    }
-                }
-
-                for (let j = 1; i - j >= 0; j++) {
-                    if (prefixPunctuation.includes(tokens[i - j].text)) {
-                        prefix = tokens[i - j].text + prefix
-                    } else {
-                        break
-                    }
-                }
-
-                return token.matches.length > 0
-                    ? <WordToken
-                        {...token}
-
-                        highlight={tokenEqual(token, this.props.highlight)}
-                        type={this.props.type}
-                        prefix={prefix}
-                        suffix={suffix}
-
-                        onClick={this.props.onTokenClick}
-                    />
-                    : token.text === '\n' ? <br/>
-                    : token.text
-            })}
+                    onClick={this.props.onTokenClick}
+                />
+                : prefix !== '' || suffix !== ''
+                ? <span>{prefix}{token.text === '\n' ? <br/> : token.text}{suffix}</span>
+                : token.text === '\n' ? <br/> : token.text
+            )}
         </section>
     }
 }
