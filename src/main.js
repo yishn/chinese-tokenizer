@@ -26,7 +26,7 @@ exports.load = function(contents) {
         let result = []
         let i = 0
 
-        let pushChineseToken = word => {
+        let pushToken = word => {
             let entries = dictionary.get(word)
 
             result.push({
@@ -39,15 +39,6 @@ exports.load = function(contents) {
                     pinyinPretty,
                     english
                 }))
-            })
-        }
-
-        let pushForeignToken = word => {
-            result.push({
-                text: word,
-                traditional: word,
-                simplified: word,
-                matches: []
             })
         }
 
@@ -68,7 +59,7 @@ exports.load = function(contents) {
                     if (![entry.traditional, entry.simplified].includes(word))
                         continue
 
-                    pushChineseToken(word)
+                    pushToken(word)
                     found = true
                     foundWord = word
 
@@ -85,16 +76,8 @@ exports.load = function(contents) {
 
             let character = text[i]
 
-            if (isChinese(character)) {
-                pushChineseToken(character)
-                i++
-                continue
-            }
-
-            // Ignore whitespace
-
-            if (character.match(/\s/) != null) {
-                pushForeignToken(character)
+            if (isChinese(character) || character.match(/\s/) != null) {
+                pushToken(character)
                 i++
                 continue
             }
@@ -108,7 +91,7 @@ exports.load = function(contents) {
             }
 
             let word = text.slice(i, end).join('')
-            pushForeignToken(word)
+            pushToken(word)
 
             i = end
         }
