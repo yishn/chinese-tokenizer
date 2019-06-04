@@ -15,14 +15,14 @@ exports.load = function(contents) {
     let dictionary = new Cedict()
     dictionary.load(contents)
 
-    function tokenize(text, traditional) {
+    return function tokenize(text) {
         text = Array.from(text)
 
         let result = []
         let i = 0
 
         let pushToken = word => {
-            let entries = dictionary.get(word, traditional)
+            let entries = dictionary.get(word)
 
             result.push({
                 text: word,
@@ -41,15 +41,16 @@ exports.load = function(contents) {
             // Try to match two or more characters
 
             if (i !== text.length - 1) {
+                let tokenSort = (x, y) => Array.from(y.traditional).length - Array.from(x.traditional).length
+
                 let getTwo = text.slice(i, i + 2).join('')
-                let entries = dictionary.getPrefix(getTwo, traditional)
+                let simplifiedEntries = dictionary.getPrefix(getTwo, false)
+                let traditionalEntries = dictionary.getPrefix(getTwo, true)
                 let found = false
                 let foundWord = null
 
-                entries.sort((x, y) => y.traditional.length - x.traditional.length)
-
-                for (let entry of entries) {
-                    let word = text.slice(i, i + entry.traditional.length).join('')
+                for (let entry of [...traditionalEntries, ...simplifiedEntries].sort(tokenSort)) {
+                    let word = text.slice(i, i + Array.from(entry.traditional).length).join('')
 
                     if (![entry.traditional, entry.simplified].includes(word))
                         continue
@@ -62,7 +63,7 @@ exports.load = function(contents) {
                 }
 
                 if (found) {
-                    i += foundWord.length
+                    i += Array.from(foundWord).length
                     continue
                 }
             }
@@ -72,7 +73,7 @@ exports.load = function(contents) {
             let character = text[i]
             let isChinese = character =>
                 chinesePunctuation.includes(character)
-                || dictionary.get(character, traditional).length > 0
+                || dictionary.get(character).length > 0
 
             if (isChinese(character) || character.match(/\s/) != null) {
                 pushToken(character)
@@ -95,20 +96,5 @@ exports.load = function(contents) {
         }
 
         return result
-    }
-
-    return function(text, {mode = 'auto'} = {}) {
-        if (mode === 'simplified') {
-            return tokenize(text, false)
-        } else if (mode === 'traditional') {
-            return tokenize(text, true)
-        }
-
-        let simplifiedTokens = tokenize(text, false)
-        let traditionalTokens = tokenize(text, true)
-
-        return simplifiedTokens.length <= traditionalTokens.length
-            ? simplifiedTokens
-            : traditionalTokens
     }
 }
