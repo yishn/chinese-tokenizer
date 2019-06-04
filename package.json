@@ -1,6 +1,6 @@
 {
   "name": "chinese-tokenizer",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Simple algorithm to tokenize Chinese texts into words using CC-CEDICT.",
   "main": "./src/main.js",
   "repository": {
