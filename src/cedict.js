@@ -15,7 +15,8 @@ function parseLine(line) {
 
 class Cedict {
     load(contents) {
-        this.trie = new Trie()
+        this.simplifiedTrie = new Trie()
+        this.traditionalTrie = new Trie()
 
         let lines = contents.split('\n')
 
@@ -25,17 +26,17 @@ class Cedict {
             let entry = parseLine(line)
             if (entry == null) continue
 
-            this.trie.push(entry.simplified, entry)
-            this.trie.push(entry.traditional, entry)
+            this.simplifiedTrie.push(entry.simplified, entry)
+            this.traditionalTrie.push(entry.traditional, entry)
         }
     }
 
-    get(word) {
-        return this.trie.get(word)
+    get(word, traditional = false) {
+        return traditional ? this.traditionalTrie.get(word) : this.simplifiedTrie.get(word)
     }
 
-    getPrefix(word) {
-        return this.trie.getPrefix(word)
+    getPrefix(word, traditional = false) {
+        return traditional ? this.traditionalTrie.getPrefix(word) : this.simplifiedTrie.getPrefix(word)
     }
 }
 

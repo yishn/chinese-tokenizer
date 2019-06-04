@@ -15,19 +15,14 @@ exports.load = function(contents) {
     let dictionary = new Cedict()
     dictionary.load(contents)
 
-    function isChinese(character) {
-        return chinesePunctuation.includes(character)
-            || dictionary.get(character).length > 0
-    }
-
-    return function tokenize(text) {
+    function tokenize(text, traditional) {
         text = Array.from(text)
 
         let result = []
         let i = 0
 
         let pushToken = word => {
-            let entries = dictionary.get(word)
+            let entries = dictionary.get(word, traditional)
 
             result.push({
                 text: word,
@@ -47,7 +42,7 @@ exports.load = function(contents) {
 
             if (i !== text.length - 1) {
                 let getTwo = text.slice(i, i + 2).join('')
-                let entries = dictionary.getPrefix(getTwo)
+                let entries = dictionary.getPrefix(getTwo, traditional)
                 let found = false
                 let foundWord = null
 
@@ -75,6 +70,9 @@ exports.load = function(contents) {
             // If it fails, match one character
 
             let character = text[i]
+            let isChinese = character =>
+                chinesePunctuation.includes(character)
+                || dictionary.get(character, traditional).length > 0
 
             if (isChinese(character) || character.match(/\s/) != null) {
                 pushToken(character)
@@ -97,5 +95,20 @@ exports.load = function(contents) {
         }
 
         return result
+    }
+
+    return function(text, {mode = 'auto'} = {}) {
+        if (mode === 'simplified') {
+            return tokenize(text, false)
+        } else if (mode === 'traditional') {
+            return tokenize(text, true)
+        }
+
+        let simplifiedTokens = tokenize(text, false)
+        let traditionalTokens = tokenize(text, true)
+
+        return simplifiedTokens.length <= traditionalTokens.length
+            ? simplifiedTokens
+            : traditionalTokens
     }
 }
