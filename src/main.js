@@ -16,11 +16,12 @@ exports.load = function(contents) {
     dictionary.load(contents)
 
     return function tokenize(text) {
-        text = Array.from(text)
+        text = Array.from(text.replace(/\r/g, ''))
 
         let result = []
-        let preference = {simplified: 0, traditional: 0}
         let i = 0
+        let [offset, line, column] = [0, 1, 1]
+        let [simplifiedPreference, traditionalPreference] = [0, 0]
 
         let pushToken = word => {
             let simplifiedEntries = dictionary.get(word, false)
@@ -28,14 +29,14 @@ exports.load = function(contents) {
 
             let entries = simplifiedEntries.length === 0 ? traditionalEntries
                 : traditionalEntries.length === 0 ? simplifiedEntries
-                : preference.simplified < preference.traditional ? traditionalEntries
-                : preference.simplified > preference.traditional ? simplifiedEntries
+                : simplifiedPreference < traditionalPreference ? traditionalEntries
+                : simplifiedPreference > traditionalPreference ? simplifiedEntries
                 : [...simplifiedEntries, ...traditionalEntries]
 
             if (traditionalEntries.length === 0 && simplifiedEntries.length > 0) {
-                preference.simplified++
+                simplifiedPreference++
             } else if (simplifiedEntries.length === 0 && traditionalEntries.length > 0) {
-                preference.traditional++
+                traditionalPreference++
             }
 
             result.push({
@@ -43,12 +44,28 @@ exports.load = function(contents) {
                 traditional: entries[0] ? entries[0].traditional : word,
                 simplified: entries[0] ? entries[0].simplified : word,
 
+                position: {
+                    offset,
+                    line,
+                    column
+                },
+
                 matches: entries.map(({pinyin, pinyinPretty, english}) => ({
                     pinyin,
                     pinyinPretty,
                     english
                 }))
             })
+
+            let wordArr = Array.from(word)
+            let lastLineBreakIndex = word.lastIndexOf('\n')
+
+            i += wordArr.length
+            offset += word.length
+            line += wordArr.filter(x => x === '\n').length
+            column = lastLineBreakIndex >= 0
+                ? word.length - lastLineBreakIndex
+                : column + word.length
         }
 
         while (i < text.length) {
@@ -81,12 +98,11 @@ exports.load = function(contents) {
 
                 if (foundWord != null) {
                     pushToken(foundWord)
-                    i += Array.from(foundWord).length
 
                     if (foundEntries === simplifiedEntries) {
-                        preference.simplified++
+                        simplifiedPreference++
                     } else if (foundEntries === traditionalEntries) {
-                        preference.traditional++
+                        traditionalPreference++
                     }
 
                     continue
@@ -103,7 +119,6 @@ exports.load = function(contents) {
 
             if (isChinese(character) || character.match(/\s/) != null) {
                 pushToken(character)
-                i++
                 continue
             }
 
@@ -117,8 +132,6 @@ exports.load = function(contents) {
 
             let word = text.slice(i, end).join('')
             pushToken(word)
-
-            i = end
         }
 
         return result
