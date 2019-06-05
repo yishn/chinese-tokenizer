@@ -32,9 +32,9 @@ exports.load = function(contents) {
                 : preference.simplified > preference.traditional ? simplifiedEntries
                 : [...simplifiedEntries, ...traditionalEntries]
 
-            if (entries === simplifiedEntries) {
+            if (traditionalEntries.length === 0 && simplifiedEntries.length > 0) {
                 preference.simplified++
-            } else if (entries === traditionalEntries) {
+            } else if (simplifiedEntries.length === 0 && traditionalEntries.length > 0) {
                 preference.traditional++
             }
 
