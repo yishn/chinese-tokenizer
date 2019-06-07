@@ -31,7 +31,7 @@ exports.load = function(contents) {
                 : traditionalEntries.length === 0 ? simplifiedEntries
                 : simplifiedPreference < traditionalPreference ? traditionalEntries
                 : simplifiedPreference > traditionalPreference ? simplifiedEntries
-                : [...simplifiedEntries, ...traditionalEntries]
+                : traditionalEntries
 
             if (traditionalEntries.length === 0 && simplifiedEntries.length > 0) {
                 simplifiedPreference++
