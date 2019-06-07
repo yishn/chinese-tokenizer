@@ -20,7 +20,7 @@ Priority
 */
 
 const sortEntries = (entries) => {
-    return entries.sort((a, b) => {
+    return [...entries].sort((a, b) => {
         const aIsOldVariant = a.english.includes("old variant of ");
         const bIsOldVariant = b.english.includes("old variant of ");
 
@@ -92,11 +92,7 @@ exports.load = function(contents) {
                     column
                 },
 
-                matches: entries.map(({pinyin, pinyinPretty, english}) => ({
-                    pinyin,
-                    pinyinPretty,
-                    english
-                }))
+                matches: sortedEntries
             })
 
             let wordArr = Array.from(word)
