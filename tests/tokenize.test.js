@@ -2,6 +2,21 @@ const {join} = require('path')
 const t = require('tap')
 const tokenize = require('..').loadFile(join(__dirname, 'cedict_ts.u8'))
 
+t.test('matches should be sorted in order of frequency', async t => {
+    let tokens = tokenize('花')
+
+    const expectedOrder = [
+        "flower/blossom/CL:朵[duo3],支[zhi1],束[shu4],把[ba3],盆[pen2],簇[cu4]/fancy pattern/florid/to spend (money, time)",
+        "flower/blossom/CL:朵[duo3],支[zhi1],束[shu4],把[ba3],盆[pen2],簇[cu4]/fancy pattern/florid/to spend (money, time)",
+        "surname Hua", 
+        "surname Hua",
+        "variant of 花[hua1]/flower/blossom/also pr. [wei3]",  
+        "old variant of 花[hua1]"
+    ];
+
+    t.strictDeepEqual(expectedOrder, tokens[0].matches.map(m => m.english))
+})
+
 t.test('should tokenize simplified Chinese text', async t => {
     let tokens = tokenize('我是中国人。')
     let tokenTexts = tokens.map(token => token.text)

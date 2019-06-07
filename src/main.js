@@ -11,6 +11,46 @@ exports.loadFile = function(path) {
     return exports.load(readFileSync(path, 'utf-8'))
 }
 
+/*
+Priority
+- Definition without infrequent keyword
+- Surname
+- Modern Variant
+- Old Variant
+*/
+
+const sortEntries = (entries) => {
+    return entries.sort((a, b) => {
+        const aIsOldVariant = a.english.includes("old variant of ");
+        const bIsOldVariant = b.english.includes("old variant of ");
+
+        const aIsSurname = a.english.includes("surname");
+        const bIsSurname = b.english.includes("surname");
+
+        const aIsModernVariant = a.english.includes("variant of ");
+        const bIsModernVariant = b.english.includes("variant of ");
+
+        const aLowPriority = Boolean(aIsOldVariant || aIsSurname || aIsModernVariant);
+        const bLowPriority = Boolean(bIsOldVariant || bIsSurname || bIsModernVariant);
+
+        if (aLowPriority && !bLowPriority) return 1;
+        if (!aLowPriority && bLowPriority) return -1;
+
+        if(aLowPriority && bLowPriority) {
+        if (aIsOldVariant && !bIsOldVariant) return 1;
+        if (!aIsOldVariant && bIsOldVariant) return -1;
+
+        if (aIsModernVariant && !bIsModernVariant) return 1;
+        if (!aIsModernVariant && bIsModernVariant) return -1;    
+
+        if (aIsSurname && !bIsSurname) return 1;
+        if (!aIsSurname && bIsSurname) return -1;
+        }
+
+        return 0;
+    });
+}
+
 exports.load = function(contents) {
     let dictionary = new Cedict()
     dictionary.load(contents)
@@ -39,10 +79,12 @@ exports.load = function(contents) {
                 traditionalPreference++
             }
 
+            const sortedEntries = sortEntries(entries);
+
             result.push({
                 text: word,
-                traditional: entries[0] ? entries[0].traditional : word,
-                simplified: entries[0] ? entries[0].simplified : word,
+                traditional: sortedEntries[0] ? sortedEntries[0].traditional : word,
+                simplified: sortedEntries[0] ? sortedEntries[0].simplified : word,
 
                 position: {
                     offset,
