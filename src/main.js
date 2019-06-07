@@ -37,14 +37,14 @@ const sortEntries = (entries) => {
         if (!aLowPriority && bLowPriority) return -1;
 
         if(aLowPriority && bLowPriority) {
-        if (aIsOldVariant && !bIsOldVariant) return 1;
-        if (!aIsOldVariant && bIsOldVariant) return -1;
+            if (aIsOldVariant && !bIsOldVariant) return 1;
+            if (!aIsOldVariant && bIsOldVariant) return -1;
 
-        if (aIsModernVariant && !bIsModernVariant) return 1;
-        if (!aIsModernVariant && bIsModernVariant) return -1;    
+            if (aIsModernVariant && !bIsModernVariant) return 1;
+            if (!aIsModernVariant && bIsModernVariant) return -1;    
 
-        if (aIsSurname && !bIsSurname) return 1;
-        if (!aIsSurname && bIsSurname) return -1;
+            if (aIsSurname && !bIsSurname) return 1;
+            if (!aIsSurname && bIsSurname) return -1;
         }
 
         return 0;
