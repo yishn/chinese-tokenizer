@@ -92,7 +92,11 @@ exports.load = function(contents) {
                     column
                 },
 
-                matches: sortedEntries
+                matches: sortedEntries.map(({pinyin, pinyinPretty, english}) => ({
+                    pinyin,
+                    pinyinPretty,
+                    english
+                }))
             })
 
             let wordArr = Array.from(word)
