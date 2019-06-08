@@ -21,34 +21,34 @@ Priority
 
 const sortEntries = (entries) => {
     return [...entries].sort((a, b) => {
-        const aIsOldVariant = a.english.includes("old variant of ");
-        const bIsOldVariant = b.english.includes("old variant of ");
+        let aIsOldVariant = a.english.includes("old variant of ")
+        let bIsOldVariant = b.english.includes("old variant of ")
 
-        const aIsSurname = a.english.includes("surname");
-        const bIsSurname = b.english.includes("surname");
+        let aIsSurname = a.english.includes("surname")
+        let bIsSurname = b.english.includes("surname")
 
-        const aIsModernVariant = a.english.includes("variant of ");
-        const bIsModernVariant = b.english.includes("variant of ");
+        let aIsModernVariant = a.english.includes("variant of ")
+        let bIsModernVariant = b.english.includes("variant of ")
 
-        const aLowPriority = Boolean(aIsOldVariant || aIsSurname || aIsModernVariant);
-        const bLowPriority = Boolean(bIsOldVariant || bIsSurname || bIsModernVariant);
+        let aLowPriority = Boolean(aIsOldVariant || aIsSurname || aIsModernVariant)
+        let bLowPriority = Boolean(bIsOldVariant || bIsSurname || bIsModernVariant)
 
-        if (aLowPriority && !bLowPriority) return 1;
-        if (!aLowPriority && bLowPriority) return -1;
+        if (aLowPriority && !bLowPriority) return 1
+        if (!aLowPriority && bLowPriority) return -1
 
         if(aLowPriority && bLowPriority) {
-            if (aIsOldVariant && !bIsOldVariant) return 1;
-            if (!aIsOldVariant && bIsOldVariant) return -1;
+            if (aIsOldVariant && !bIsOldVariant) return 1
+            if (!aIsOldVariant && bIsOldVariant) return -1
 
-            if (aIsModernVariant && !bIsModernVariant) return 1;
-            if (!aIsModernVariant && bIsModernVariant) return -1;    
+            if (aIsModernVariant && !bIsModernVariant) return 1
+            if (!aIsModernVariant && bIsModernVariant) return -1    
 
-            if (aIsSurname && !bIsSurname) return 1;
-            if (!aIsSurname && bIsSurname) return -1;
+            if (aIsSurname && !bIsSurname) return 1
+            if (!aIsSurname && bIsSurname) return -1
         }
 
-        return 0;
-    });
+        return 0
+    })
 }
 
 exports.load = function(contents) {
@@ -79,7 +79,7 @@ exports.load = function(contents) {
                 traditionalPreference++
             }
 
-            const sortedEntries = sortEntries(entries);
+            let sortedEntries = sortEntries(entries)
 
             result.push({
                 text: word,

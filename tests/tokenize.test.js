@@ -12,7 +12,7 @@ t.test('matches should be sorted in order of frequency', async t => {
         "surname Hua",
         "variant of 花[hua1]/flower/blossom/also pr. [wei3]",  
         "old variant of 花[hua1]"
-    ];
+    ]
 
     t.strictDeepEqual(expectedOrder, tokens[0].matches.map(m => m.english))
 })
