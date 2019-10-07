@@ -80,10 +80,31 @@ Output:
 
 ## API
 
-### `loadFile(path)`
+### `chineseTokenizer.loadFile(path)`
 
 Reads the [CC-CEDICT](https://cc-cedict.org/) file from given `path` and returns a tokenize function based on the dictionary.
 
-### `load(content)`
+### `chineseTokenizer.load(content)`
 
 Parses [CC-CEDICT](https://cc-cedict.org/) string content from `content` and returns a tokenize function based on the dictionary.
+
+### `tokenize(text)`
+
+Tokenizes the given `text` string and returns an array with tokens of the following form:
+
+~~~js
+{
+  "text": <string>,
+  "traditional": <string>,
+  "simplified": <string>,
+  "position": { "offset": number, "line": number, "column": number },
+  "matches": [
+    {
+      "pinyin": string,
+      "pinyinPretty": string,
+      "english": string
+    },
+    ...
+  ]
+}
+~~~
