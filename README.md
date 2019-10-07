@@ -97,12 +97,12 @@ Tokenizes the given `text` string and returns an array with tokens of the follow
   "text": <string>,
   "traditional": <string>,
   "simplified": <string>,
-  "position": { "offset": number, "line": number, "column": number },
+  "position": { "offset": <number>, "line": <number>, "column": <number> },
   "matches": [
     {
-      "pinyin": string,
-      "pinyinPretty": string,
-      "english": string
+      "pinyin": <string>,
+      "pinyinPretty": <string>,
+      "english": <string>
     },
     ...
   ]
