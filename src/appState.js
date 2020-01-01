@@ -45,6 +45,14 @@ export function updateHighlight(state, token) {
     let newHistory = state.highlightHistory.slice(0, state.highlightIndex + 1)
 
     if (token != null) {
+        token.matches.sort((x, y) => {
+            return x.english < y.english ? -1 : +(x.english !== y.english)
+        });
+
+        token.matches = token.matches.filter((x, i, arr) => {
+            return i === 0 || arr[i - 1].english !== x.english || arr[i - 1].pinyin !== x.pinyin
+        })
+
         if (newHistory.length >= highlightHistoryMaxLength) newHistory.shift()
         newHistory.push(token)
     }
