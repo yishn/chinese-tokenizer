@@ -15,7 +15,7 @@
   "homepage": "https://github.com/yishn/chinese-tokenizer",
   "dependencies": {
     "chinese-tokenizer": "^2.4.0",
-    "preact": "^8.5.3"
+    "preact": "^10.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
