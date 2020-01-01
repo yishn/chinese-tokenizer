@@ -14,18 +14,18 @@
   },
   "homepage": "https://github.com/yishn/chinese-tokenizer",
   "dependencies": {
-    "chinese-tokenizer": "^2.3.2",
-    "preact": "^8.4.2"
+    "chinese-tokenizer": "^2.4.0",
+    "preact": "^8.5.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/plugin-proposal-class-properties": "^7.4.4",
-    "@babel/preset-env": "^7.4.5",
-    "@babel/preset-react": "^7.0.0",
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
     "babel-loader": "^8.0.6",
-    "http-server": "^0.11.1",
-    "webpack": "^4.33.0",
-    "webpack-cli": "^3.3.2"
+    "http-server": "^0.12.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
   },
   "scripts": {
     "start": "http-server",
