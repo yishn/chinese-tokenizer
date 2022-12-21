@@ -21,10 +21,8 @@ export default class App extends Component {
         let request = new XMLHttpRequest()
 
         request.addEventListener('progress', evt => {
-            if (evt.lengthComputable) {
-                let percent = evt.loaded / evt.total
-                this.setState(state => appState.updateProgress(state, percent))
-            }
+            let percent = evt.loaded / 9497637
+            this.setState(state => appState.updateProgress(state, percent))
         })
 
         request.addEventListener('load', evt => {
