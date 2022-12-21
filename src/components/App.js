@@ -32,7 +32,7 @@ export default class App extends Component {
             this.setState(state => appState.commitDictionary(state, responseText))
         })
 
-        request.open('GET', './data/cedict_ts.u8')
+        request.open('GET', './data/cedict_ts.u8.txt')
         request.send()
     }
 
